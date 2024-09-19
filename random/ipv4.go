@@ -39,6 +39,9 @@ func IPv4(cidr string) (net.IP, error) {
 	
 	// Generate a random number within the network size
 	random2, err := rand.Int(rand.Reader, big.NewInt(int64(size)))
+	if err != nil {
+		return nil, fmt.Errorf("error generating a random number for calculating the IPv4: %w", err)
+	}
 	
 	// Add the random number to the IP
 	result := uint32ToIP(ipUint32 + uint32(random2.Int64()))

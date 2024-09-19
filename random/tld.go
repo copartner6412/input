@@ -25,6 +25,10 @@ func TLD(minLength, maxLength uint) (string, error) {
 	set := tlds[int(length)]
 
 	random1, err := rand.Int(rand.Reader, big.NewInt(int64(len(set))))
+	if err != nil {
+		return "", fmt.Errorf("error generating a random index for selecting a TLD: %w", err)
+	}
+
 	return set[random1.Int64()], nil
 }
 
@@ -36,7 +40,7 @@ func CCTLD() (string, error) {
 
 	index, err := rand.Int(rand.Reader, big.NewInt(int64(len(tlds))))
 	if err != nil {
-		return "", fmt.Errorf("error generating a random index: %w", err)
+		return "", fmt.Errorf("error generating a random index for selecting a ccTLD: %w", err)
 	}
 
 	return tlds[index.Int64()], nil

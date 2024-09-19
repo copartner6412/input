@@ -17,7 +17,7 @@ func LinuxHostname(r *rand.Rand, minLength, maxLength uint) (string, error) {
 	}
 
 	// Define character sets for allowed hostname characters.
-	allowedCharacters := append(alphanumericalRunes, '-') // Middle characters can include hyphens.
+	allowedCharacters := append(lowerAlphanumericalRunes, '-') // Middle characters can include hyphens.
 
 	// Create a rune slice to hold the generated hostname.
 
@@ -33,7 +33,7 @@ func LinuxHostname(r *rand.Rand, minLength, maxLength uint) (string, error) {
 
 	// Last character: must be alphanumeric (if the total length is greater than 1).
 	if length > 1 {
-		hostname[length-1] = alphanumericalRunes[r.IntN(len(alphanumericalRunes))]
+		hostname[length-1] = lowerAlphanumericalRunes[r.IntN(len(lowerAlphanumericalRunes))]
 	}
 
 	// Convert the rune slice to a string and return the result.

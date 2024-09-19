@@ -122,6 +122,9 @@ func DomainWithValidTLD(minLength, maxLength uint) (domain string, err error) {
 	}
 
 	random1, err := rand.Int(rand.Reader, big.NewInt(int64(maxTLDLength - minTLDLengthAllowed + 1)))
+	if err != nil {
+		return "", fmt.Errorf("error generating a random number for claculating TLD length: %w", err)
+	}
 	tldLength := minTLDLengthAllowed + uint(random1.Int64())
 
 
