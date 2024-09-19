@@ -1,22 +1,25 @@
 package validate
 
 import (
-	"errors"
 	"fmt"
 	"time"
 )
 
 func Duration(duration time.Duration, minDuration, maxDuration time.Duration) error {
 	if duration < 0 {
-		return errors.New("duration can not be negative")
+		return fmt.Errorf("duration %v is negative", duration)
+	}
+
+	if minDuration < 0 {
+		return fmt.Errorf("minimum duration %v is negative", minDuration)
+	}
+
+	if maxDuration < 0 {
+		return fmt.Errorf("maximum duration %v is negative", maxDuration)
 	}
 
 	if minDuration > maxDuration {
 		return fmt.Errorf("minimum duration %v is greater than maximum duration %v", minDuration, maxDuration)
-	}
-
-	if minDuration < 0 {
-		return errors.New("minimum duration can not be negative")
 	}
 
 	if duration < minDuration {
