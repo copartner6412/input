@@ -1,4 +1,4 @@
-module github.com/copartner6412/input/random
+module github.com/copartner6412/input/pseudorandom
 
 go 1.23.0
 
