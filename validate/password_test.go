@@ -7,10 +7,6 @@ import (
 	"github.com/copartner6412/input/validate"
 )
 
-const (
-	maxPasswordLengthAllowed uint = 4096
-)
-
 func TestPasswordSuccessfulForValidInput(t *testing.T) {
 	testCases := map[string]struct {
 		password string

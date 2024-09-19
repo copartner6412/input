@@ -6,11 +6,6 @@ import (
 	"github.com/copartner6412/input/validate"
 )
 
-const (
-	minPassphraseWordsAllowed uint = 2
-	maxPassphraseWordsAllowed uint = 128
-)
-
 func TestPassphraseSuccessfulForValidPassphrase(t *testing.T) {
 	testCases := map[string]struct {
 		passphrase string

@@ -6,11 +6,6 @@ import (
 	"github.com/copartner6412/input/validate"
 )
 
-const (
-	minStringLengthAllowed = 1    // Minimum acceptable string length
-	maxStringLengthAllowed = 8192 // Maximum acceptable string length
-)
-
 func TestStringSuccessfulForValidString(t *testing.T) {
 	testCases := map[string]struct {
 		str       string

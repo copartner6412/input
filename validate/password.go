@@ -28,24 +28,24 @@ var ErrBadPass error = errors.New("password is found in the list of common bad p
 // minLength and maxLength must be less than 4096.
 // The minimum characters allowed for minLength and maxLength equals to the number of boolean requirements (lower, upper, digit, special) that are true. If all are false, the number is one.
 // If you also want to check if a password is in the OWASP 1 million bad passwords, use validate.PasswordNotBad function, instead.
-func Password(password string, minLength, maxLength uint, hasLower, hasUpper, hasDigit, hasSpecial bool) error {
+func Password(password string, minLength, maxLength uint, requireLower, requireUpper, requireDigit, requireSpecial bool) error {
 	var minPasswordLengthAllowed uint
 
-	if hasLower {
+	if requireLower {
 		minPasswordLengthAllowed++
 	}
-	if hasUpper {
+	if requireUpper {
 		minPasswordLengthAllowed++
 	}
-	if hasDigit {
+	if requireDigit {
 		minPasswordLengthAllowed++
 	}
-	if hasSpecial {
+	if requireSpecial {
 		minPasswordLengthAllowed++
 	}
 
 	// If no requirement is true, password will have only ASCII lower case letters.
-	if !hasLower && !hasUpper && !hasDigit && !hasSpecial {
+	if !requireLower && !requireUpper && !requireDigit && !requireSpecial {
 		minPasswordLengthAllowed = 1
 	}
 
@@ -55,38 +55,38 @@ func Password(password string, minLength, maxLength uint, hasLower, hasUpper, ha
 	}
 
 	// Flags to track whether the password meets the required complexity rules.
-	hasOneLowercase := !hasLower
-	hasOneUppercase := !hasUpper
-	hasOneDigit := !hasDigit
-	hasOneSpecial := !hasSpecial
+	hasAtLeastOneLowerCase := !requireLower
+	hasAtLeastOneUpperCase := !requireUpper
+	hasAtLeastOneDigit := !requireDigit
+	hasAtLeastOneSpecial := !requireSpecial
 
 	// Iterate through the password to validate its complexity.
 	for _, char := range password {
 		switch {
 		case strings.ContainsRune(string(lowerCaseRunes), char):
-			hasOneLowercase = true
+			hasAtLeastOneLowerCase = true
 		case strings.ContainsRune(string(upperCaseRunes), char):
-			hasOneUppercase = true
+			hasAtLeastOneUpperCase = true
 		case strings.ContainsRune(string(digitRunes), char):
-			hasOneDigit = true
+			hasAtLeastOneDigit = true
 		case strings.ContainsRune(string(specialRunes), char):
-			hasOneSpecial = true
+			hasAtLeastOneSpecial = true
 		case char < 32 || char > 126: // Ensure all characters are printable ASCII characters.
 			return errors.New("password contains a non-printable ASCII character")
 		}
 	}
 
 	// Check if all required complexity conditions are met.
-	if !hasOneLowercase {
+	if !hasAtLeastOneLowerCase {
 		return errors.New("password must contain at least one lowercase letter")
 	}
-	if !hasOneUppercase {
+	if !hasAtLeastOneUpperCase {
 		return errors.New("password must contain at least one uppercase letter")
 	}
-	if !hasOneDigit {
+	if !hasAtLeastOneDigit {
 		return errors.New("password must contain at least one digit")
 	}
-	if !hasOneSpecial {
+	if !hasAtLeastOneSpecial {
 		return errors.New("password must contain at least one special character")
 	}
 
@@ -95,8 +95,8 @@ func Password(password string, minLength, maxLength uint, hasLower, hasUpper, ha
 }
 
 // PasswordNotBad does exactly everything 'validate.Password' does but also returns an error if the password is in the OWASP 1 million bad password list.
-func PasswordNotBad(password string, minLength, maxLength uint, hasLower, hasUpper, hasDigit, hasSpecial bool) error {
-	err := Password(password, minLength, maxLength, hasLower, hasUpper, hasDigit, hasSpecial)
+func PasswordNotBad(password string, minLength, maxLength uint, requireLower, requireUpper, requireDigit, requireSpecial bool) error {
+	err := Password(password, minLength, maxLength, requireLower, requireUpper, requireDigit, requireSpecial)
 	if err != nil {
 		return err
 	}
@@ -176,90 +176,90 @@ func loadBadPass() error {
 type PasswordProfile struct {
 	minLength  uint
 	maxLength  uint
-	hasLower   bool
-	hasUpper   bool
-	hasDigit   bool
-	hasSpecial bool
+	requireLower   bool
+	requireUpper   bool
+	requireDigit   bool
+	requireSpecial bool
 }
 
 var (
 	// Password profile for TLS CA key:
 	//  - minLength: 20
 	//  - maxLength: 255
-	//  - hasLower: true
-	//  - hasUpper: true
-	//  - hasDigit: true
-	//  - hasSpecial: true
-	PasswordProfileTLSCAKey = PasswordProfile{minLength: 20, maxLength: 255, hasLower: true, hasUpper: true, hasDigit: true, hasSpecial: true}
+	//  - requireLower: true
+	//  - requireUpper: true
+	//  - requireDigit: true
+	//  - requireSpecial: true
+	PasswordProfileTLSCAKey = PasswordProfile{minLength: 20, maxLength: 255, requireLower: true, requireUpper: true, requireDigit: true, requireSpecial: true}
 	// Password Profile for SSH CA key:
 	//  - minLength: 20
 	//  - maxLength: 255
-	//  - hasLower: true
-	//  - hasUpper: true
-	//  - hasDigit: true
-	//  - hasSpecial: true
-	PasswordProfileSSHCAKey = PasswordProfile{minLength: 20, maxLength: 255, hasLower: true, hasUpper: true, hasDigit: true, hasSpecial: true}
+	//  - requireLower: true
+	//  - requireUpper: true
+	//  - requireDigit: true
+	//  - requireSpecial: true
+	PasswordProfileSSHCAKey = PasswordProfile{minLength: 20, maxLength: 255, requireLower: true, requireUpper: true, requireDigit: true, requireSpecial: true}
 	// Password profile for TLS key:
 	//  - minLength: 20
 	//  - maxLength: 127
-	//  - hasLower: true
-	//  - hasUpper: true
-	//  - hasDigit: true
-	//  - hasSpecial: true
-	PasswordProfileTLSKey = PasswordProfile{minLength: 20, maxLength: 127, hasLower: true, hasUpper: true, hasDigit: true, hasSpecial: true}
+	//  - requireLower: true
+	//  - requireUpper: true
+	//  - requireDigit: true
+	//  - requireSpecial: true
+	PasswordProfileTLSKey = PasswordProfile{minLength: 20, maxLength: 127, requireLower: true, requireUpper: true, requireDigit: true, requireSpecial: true}
 	// Password profile for SSH key:
 	//  - minLength: 20
 	//  - maxLength: 127
-	//  - hasLower: true
-	//  - hasUpper: true
-	//  - hasDigit: true
-	//  - hasSpecial: false
-	PasswordProfileSSHKey = PasswordProfile{minLength: 20, maxLength: 127, hasLower: true, hasUpper: true, hasDigit: true, hasSpecial: false}
+	//  - requireLower: true
+	//  - requireUpper: true
+	//  - requireDigit: true
+	//  - requireSpecial: false
+	PasswordProfileSSHKey = PasswordProfile{minLength: 20, maxLength: 127, requireLower: true, requireUpper: true, requireDigit: true, requireSpecial: false}
 	// Password profile for Linux server user:
 	//  - minLength: 20
 	//  - maxLength: 63
-	//  - hasLower: true
-	//  - hasUpper: true
-	//  - hasDigit: true
-	//  - hasSpecial: false
-	PasswordProfileLinuxServerUser = PasswordProfile{minLength: 20, maxLength: 63, hasLower: true, hasUpper: true, hasDigit: true, hasSpecial: false}
+	//  - requireLower: true
+	//  - requireUpper: true
+	//  - requireDigit: true
+	//  - requireSpecial: false
+	PasswordProfileLinuxServerUser = PasswordProfile{minLength: 20, maxLength: 63, requireLower: true, requireUpper: true, requireDigit: true, requireSpecial: false}
 	// Password profile for Linux workstation user:
 	//  - minLength: 10
 	//  - maxLength: 20
-	//  - hasLower: true
-	//  - hasUpper: false
-	//  - hasDigit: true
-	//  - hasSpecial: false
-	PasswordProfileLinuxWorkstationUser = PasswordProfile{minLength: 10, maxLength: 20, hasLower: true, hasUpper: false, hasDigit: true, hasSpecial: false}
+	//  - requireLower: true
+	//  - requireUpper: false
+	//  - requireDigit: true
+	//  - requireSpecial: false
+	PasswordProfileLinuxWorkstationUser = PasswordProfile{minLength: 10, maxLength: 20, requireLower: true, requireUpper: false, requireDigit: true, requireSpecial: false}
 	// Password profile for Windows server user:
 	//  - minLength: 20
 	//  - maxLength: 63
-	//  - hasLower: true
-	//  - hasUpper: true
-	//  - hasDigit: true
-	//  - hasSpecial: false
-	PasswordProfileWindowsServerUser = PasswordProfile{minLength: 20, maxLength: 63, hasLower: true, hasUpper: true, hasDigit: true, hasSpecial: false}
+	//  - requireLower: true
+	//  - requireUpper: true
+	//  - requireDigit: true
+	//  - requireSpecial: false
+	PasswordProfileWindowsServerUser = PasswordProfile{minLength: 20, maxLength: 63, requireLower: true, requireUpper: true, requireDigit: true, requireSpecial: false}
 	// Password profile for Windows desktop user:
 	//  - minLength: 10
 	//  - maxLength: 20
-	//  - hasLower: true
-	//  - hasUpper: false
-	//  - hasDigit: true
-	//  - hasSpecial: false
-	PasswordProfileWindowsDesktopUser = PasswordProfile{minLength: 10, maxLength: 20, hasLower: true, hasUpper: false, hasDigit: true, hasSpecial: false}
+	//  - requireLower: true
+	//  - requireUpper: false
+	//  - requireDigit: true
+	//  - requireSpecial: false
+	PasswordProfileWindowsDesktopUser = PasswordProfile{minLength: 10, maxLength: 20, requireLower: true, requireUpper: false, requireDigit: true, requireSpecial: false}
 	// 	Password profile for MariaDB
 	//  - minLength: 20
 	//  - maxLength: 31
-	//  - hasLower: true
-	//  - hasUpper: true
-	//  - hasDigit: true
-	//  - hasSpecial: false
-	PasswordProfileMariaDB = PasswordProfile{minLength: 20, maxLength: 31, hasLower: true, hasUpper: true, hasDigit: true, hasSpecial: false}
+	//  - requireLower: true
+	//  - requireUpper: true
+	//  - requireDigit: true
+	//  - requireSpecial: false
+	PasswordProfileMariaDB = PasswordProfile{minLength: 20, maxLength: 31, requireLower: true, requireUpper: true, requireDigit: true, requireSpecial: false}
 )
 
 // PasswordFor validates a password based on a predefined password profile.
 func PasswordFor(password string, profile PasswordProfile) error {
-	err := Password(password, profile.minLength, profile.maxLength, profile.hasLower, profile.hasUpper, profile.hasDigit, profile.hasSpecial)
+	err := Password(password, profile.minLength, profile.maxLength, profile.requireLower, profile.requireUpper, profile.requireDigit, profile.requireSpecial)
 	if err != nil {
 		return err
 	}
