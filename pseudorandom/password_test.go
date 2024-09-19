@@ -112,3 +112,112 @@ func FuzzPasswordFor(f *testing.F) {
 
 	})
 }
+
+func TestPasswordForSuccessfulForValidPassword(t *testing.T) {
+	testCases := map[string]struct {
+		password string
+		profile  validate.PasswordProfile
+	}{
+		"TLS CA Key": {
+			password: "ValidTLSPassword123456789!",
+			profile:  validate.PasswordProfileTLSCAKey,
+		},
+		"SSH CA Key": {
+			password: "SSHCaKeyPassword123456789@",
+			profile:  validate.PasswordProfileSSHCAKey,
+		},
+		"TLS Key": {
+			password: "TlsKeyValidPass123456789@",
+			profile:  validate.PasswordProfileTLSKey,
+		},
+		"SSH Key": {
+			password: "ValidSshPassword123456789", // No special characters required
+			profile:  validate.PasswordProfileSSHKey,
+		},
+		"Linux Server User": {
+			password: "LinuxServerPass123456789", // No special characters required
+			profile:  validate.PasswordProfileLinuxServerUser,
+		},
+		"Linux Workstation User": {
+			password: "WorkPass123", // Shorter password, no upper case required
+			profile:  validate.PasswordProfileLinuxWorkstationUser,
+		},
+		"Windows Server User": {
+			password: "ValidWinServerPass123456789", // No special characters required
+			profile:  validate.PasswordProfileWindowsServerUser,
+		},
+		"Windows Desktop User": {
+			password: "DesktopPass123", // No upper case or special characters required
+			profile:  validate.PasswordProfileWindowsDesktopUser,
+		},
+		"MariaDB": {
+			password: "MariaDBPass123456789", // No special characters required, short max length
+			profile:  validate.PasswordProfileMariaDB,
+		},
+	}
+
+	for name, testCase := range testCases {
+		t.Run(name, func(t *testing.T) {
+			err := validate.PasswordFor(testCase.password, testCase.profile)
+			if err != nil {
+				if !errors.Is(err, validate.ErrBadPass) {
+					t.Errorf("expected no error for valid password %q, but got error: %v", testCase.password, err)
+				}
+			}
+		})
+	}
+}
+
+func TestPasswordForFailsForNotComplexInput(t *testing.T) {
+	testCases := map[string]struct {
+		password string
+		profile  validate.PasswordProfile
+	}{
+		"TLS CA Key - Missing special character": {
+			password: "ValidPassword12345abcdefghijk", // Missing special character
+			profile:  validate.PasswordProfileTLSCAKey,
+		},
+		"SSH CA Key - Missing digit": {
+			password: "ValidPasswordSpecial!abcdefghij", // Missing digit
+			profile:  validate.PasswordProfileSSHCAKey,
+		},
+		"TLS Key - Missing upper case": {
+			password: "validpassword123!abcdefghijk", // Missing upper case letter
+			profile:  validate.PasswordProfileTLSKey,
+		},
+		"SSH Key - Missing digit": {
+			password: "ValidPasswordNoDigitabcdefghij", // Missing digit
+			profile:  validate.PasswordProfileSSHKey,
+		},
+		"Linux Server User - Missing digit": {
+			password: "ValidPasswordNoDigitabcdefghi", // Missing digit
+			profile:  validate.PasswordProfileLinuxServerUser,
+		},
+		"Linux Workstation User - Missing digit": {
+			password: "validpasswordabcdef", // Missing digit
+			profile:  validate.PasswordProfileLinuxWorkstationUser,
+		},
+		"Windows Server User - Missing digit": {
+			password: "ValidPasswordNoDigit", // Missing digit
+			profile:  validate.PasswordProfileWindowsServerUser,
+		},
+		"Windows Desktop User - Missing digit": {
+			password: "validpassword", // Missing digit
+			profile:  validate.PasswordProfileWindowsDesktopUser,
+		},
+		"MariaDB - Missing digit": {
+			password: "ValidPasswordNoDigit", // Missing digit
+			profile:  validate.PasswordProfileMariaDB,
+		},
+	}
+
+	for name, testCase := range testCases {
+		t.Run(name, func(t *testing.T) {
+			err := validate.PasswordFor(testCase.password, testCase.profile)
+			if err == nil || errors.Is(err, validate.ErrBadPass) {
+				t.Errorf("expected error for password %q in profile %q, but got no error", testCase.password, name)
+			}
+		})
+	}
+}
+
