@@ -1,4 +1,4 @@
-# common: Overview
+# input: Overview
 common is a Go project consisting of three primary packages: pseudorandom, random, and validate. These packages provide a range of utility functions for generating deterministic pseudo-random values, cryptographically-secure random values, and performing input validation.
 
 __Contributions and suggestions are welcome and appreciated.__
@@ -18,7 +18,7 @@ The validate package provides utility functions to validate common input formats
 To install the common project and its packages, you can run:
 
 ```bash
-go get -u github.com/copartner6412/common
+go get -u github.com/copartner6412/input
 ```
 Then import the specific packages you need:
 
@@ -33,7 +33,7 @@ import (
 ## Usage Examples
 ### Example 1: Generate a Random Password
 ```go
-password, err := random.Password(20, true, true, true, true)
+password, err := random.Password(8, 20, true, true, true, true)
 if err != nil {
     log.Fatal(err)
 }
@@ -48,7 +48,7 @@ if err != nil {
 ```
 ### Example 3: Generate a Pseudorandom Domain
 ```go
-r := rand.New(rand.NewSource(42)) // Seeded for reproducibility
+r := rand.New(rand.NewPCG(seed1, seed2)) // Seeded for reproducibility
 domain := pseudorandom.Domain(r)
 fmt.Printf("Generated Domain: %s\n", domain)
 ```
