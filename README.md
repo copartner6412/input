@@ -1,5 +1,5 @@
 # input: Overview
-common is a Go project consisting of three primary packages: pseudorandom, random, and validate. These packages provide a range of utility functions for generating deterministic pseudo-random values, cryptographically-secure random values, and performing input validation.
+input is a Go project consisting of three primary packages: pseudorandom, random, and validate. These packages provide a range of utility functions for generating deterministic pseudo-random values, cryptographically-secure random values, and performing input validation.
 
 __Contributions and suggestions are welcome and appreciated.__
 
@@ -15,7 +15,7 @@ The random package provides cryptographically-secure random data generation, ens
 The validate package provides utility functions to validate common input formats such as email addresses, domains, IP addresses, and more.
 
 ## Installation
-To install the common project and its packages, you can run:
+To install the input project and its packages, you can run:
 
 ```bash
 go get -u github.com/copartner6412/input
