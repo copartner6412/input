@@ -1,0 +1,6 @@
+github.com/copartner6412/common/pseudorandom v0.0.0-20240911123358-983d80b29b0c h1:zYZ7KKr0BdtolcxexbUvCnnHHqHX+PfYHa2PshcgPk0=
+github.com/copartner6412/common/pseudorandom v0.0.0-20240911123358-983d80b29b0c/go.mod h1:NyM72N6gk9ksVy8sCuIzreLuxVxyfxAEX9dx6qALm6I=
+github.com/copartner6412/common/validate v0.0.0-20240911123358-983d80b29b0c h1:smDK9yH8eMahkq69MAeTP+b4p6JoVINePHfbPY3ZDds=
+github.com/copartner6412/common/validate v0.0.0-20240911123358-983d80b29b0c/go.mod h1:W3L5j0nhXbwAy0xobFdlbftUmcrUTl1wkKYaeeuMRiU=
+github.com/copartner6412/input/validate v0.0.0-20240914184439-419910f6e602 h1:M1FpA2cA4z6p7imawkVKnT1C913ekzt7OhZljmIcqMw=
+github.com/copartner6412/input/validate v0.0.0-20240914184439-419910f6e602/go.mod h1:7Pql7ybGo97Tm6jgoT8dlL+t9Hi9fhTUmBnWLAc8ksU=
