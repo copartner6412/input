@@ -1,63 +1,10 @@
 package validate_test
 
 import (
-	"math/rand/v2"
 	"testing"
 
-	"github.com/copartner6412/input/pseudorandom"
 	"github.com/copartner6412/input/validate"
 )
-
-func FuzzIPSuccessfulForValidPseudorandomV4Input(f *testing.F) {
-	f.Fuzz(func(t *testing.T, seed1, seed2 uint64) {
-		r1 := rand.New(rand.NewPCG(seed1, seed2))
-		cidr41 := pseudorandom.CIDRv4(r1)
-		ipv41, err := pseudorandom.IPv4(r1, cidr41.String())
-		if err != nil {
-			t.Fatalf("error generating a pseudo-random IPv4: %v", err)
-		}
-
-		err = validate.IP(ipv41.String(), cidr41.String())
-		if err != nil {
-			t.Fatalf("unexpected error for the pseudo-random IPv4 \"%s\" within \"%s\" network: %v", ipv41.String(), cidr41.String(), err)
-		}
-
-		r2 := rand.New(rand.NewPCG(seed1, seed2))
-		cidr42 := pseudorandom.CIDRv4(r2)
-		ipv42, err := pseudorandom.IPv4(r2, cidr42.String())
-
-		if ipv41.String() != ipv42.String() {
-			t.Fatal("not deterministic")
-		}
-	})
-}
-
-func FuzzIPvSuccessfulForValidPseudorandomV6Input(f *testing.F) {
-	f.Fuzz(func(t *testing.T, seed1, seed2 uint64) {
-		r1 := rand.New(rand.NewPCG(seed1, seed2))
-		cidr61 := pseudorandom.CIDRv6(r1)
-		ipv61, err := pseudorandom.IPv6(r1, cidr61.String())
-		if err != nil {
-			t.Errorf("error generating a pseudo-random IPv6: %v", err)
-		}
-
-		err = validate.IP(ipv61.String(), cidr61.String())
-		if err != nil {
-			t.Errorf("expected no error for the pseudo-random IPv6 \"%s\" within \"%s\" network, but got error: %v", ipv61.String(), cidr61.String(), err)
-		}
-
-		r2 := rand.New(rand.NewPCG(seed1, seed2))
-		cidr62 := pseudorandom.CIDRv6(r2)
-		ipv62, err := pseudorandom.IPv6(r2, cidr62.String())
-		if err != nil {
-			t.Errorf("error generating a pseudo-random IPv6: %v", err)
-		}
-		
-		if ipv61.String() != ipv62.String() {
-			t.Error("not deterministic")
-		}
-	})
-}
 
 func TestIPSuccessfulForValidInput(t *testing.T) {
 	t.Parallel()

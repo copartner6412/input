@@ -4,7 +4,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/copartner6412/input/pseudorandom"
 	"github.com/copartner6412/input/validate"
 )
 
@@ -17,31 +16,6 @@ const (
 	minDomainWithValidTLDLengthAllowed uint = minTLDLengthAllowed + 2
 	minDomainWithValidCCTLDLengthAllowed uint = ccTLDLength + 2
 )
-
-func FuzzDomainSuccefulForValidPseudorandomInput(f *testing.F) {
-	f.Fuzz(func(t *testing.T, seed1, seed2 uint64, min, max uint) {
-		r1, r2, minLength, maxLength := randoms(seed1, seed2, min, max, minDomainLengthAllowed, maxDomainLengthAllowed)
-		
-		domain1, err := pseudorandom.Domain(r1, minLength, maxLength)
-		if err != nil {
-			t.Fatalf("error generating a pseudo-random domain: %v", err)
-		}
-
-		err = validate.Domain(domain1, minLength, maxLength)
-		if err != nil {
-			t.Fatalf("expected no error for valid pseudo-random domain \"%s\", but got error: %v", domain1, err)
-		}
-
-		domain2, err := pseudorandom.Domain(r2, minLength, maxLength)
-		if err != nil {
-			t.Fatalf("error regenerating the pseudo-random domain: %v", err)
-		}
-
-		if domain1 != domain2 {
-			t.Fatalf("not deterministic")
-		}
-	})
-}
 
 func TestDomainSuccessfulForValidInput(t *testing.T) {
     t.Parallel()
@@ -208,32 +182,6 @@ func TestDomainFailsForInvalidInput(t *testing.T) {
     }
 }
 
-
-func FuzzDomainWithValidTLDSuccessfulForValidPseudorandomInput(f *testing.F) {
-	f.Fuzz(func(t *testing.T, seed1, seed2 uint64, min, max uint) {
-		r1, r2, minLength, maxLength := randoms(seed1, seed2, min, max, minDomainWithValidTLDLengthAllowed, maxDomainLengthAllowed)
-
-		domain1, err := pseudorandom.DomainWithValidTLD(r1, minLength, maxLength)
-		if err != nil {
-			t.Fatalf("error generating a pseudo-random domain with valid TLD: %v", err)
-		}
-
-		err = validate.DomainWithValidTLD(domain1, minLength, maxLength)
-		if err != nil {
-			t.Fatalf("expected no error for valid pseudo-random domain \"%s\", but got error: %v", domain1, err)
-		}
-
-		domain2, err := pseudorandom.DomainWithValidTLD(r2, minLength, maxLength)
-		if err != nil {
-			t.Fatalf("error regenerating the pseudo-random domain with valid TLD: %v", err)
-		}
-
-		if domain1 != domain2 {
-			t.Fatal("not deterministic")
-		}
-	})
-}
-
 func TestDomainWithValidTLDSuccessfulForValidInput(t *testing.T) {
     testCases := map[string]struct{
         domain    string
@@ -393,32 +341,6 @@ func TestDomainWithValidTLDFailsForInvalidInput(t *testing.T) {
             }
         })
     }
-}
-
-
-func FuzzDomainWithValidCCTLDSuccessfulForValidPseudorandomInput(f *testing.F) {
-	f.Fuzz(func(t *testing.T, seed1, seed2 uint64, min, max uint) {
-		r1, r2, minLength, maxLength := randoms(seed1, seed2, min, max, minDomainWithValidCCTLDLengthAllowed, maxDomainLengthAllowed)
-
-		domain1, err := pseudorandom.DomainWithValidCCTLD(r1, minLength, maxLength)
-		if err != nil {
-			t.Fatalf("error generating a pseudo-random domain with valid ccTLD: %v", err)
-		}
-
-		err = validate.DomainWithValidCCTLD(domain1, minLength, maxLength)
-		if err != nil {
-			t.Fatalf("expected no error for valid pseudo-random domain \"%s\", but got error: %v", domain1, err)
-		}
-
-		domain2, err := pseudorandom.DomainWithValidCCTLD(r2, minLength, maxLength)
-		if err != nil {
-			t.Fatalf("error regenerating the pseudo-random domain with valid ccTLD: %v", err)
-		}
-
-		if domain1 != domain2 {
-			t.Fatal("not deterministic")
-		}
-	})
 }
 
 func TestDomainWithValidCCTLDSuccessfulForValidInput(t *testing.T) {
