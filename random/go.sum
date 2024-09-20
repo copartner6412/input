@@ -4,3 +4,5 @@ github.com/copartner6412/input/validate v0.0.0-20240919173201-0499c3945973 h1:zF
 github.com/copartner6412/input/validate v0.0.0-20240919173201-0499c3945973/go.mod h1:B8eVcC6b/wIlXXATiCH0RIswbxTbIaWa/qlK7CikkeM=
 github.com/copartner6412/input/validate v0.0.0-20240919193757-6c855e0158e9 h1:IVYSwg+MbXyUlDdJLaJGi15R7QML4ybkvhybINXCRpM=
 github.com/copartner6412/input/validate v0.0.0-20240919193757-6c855e0158e9/go.mod h1:8AL4saqTa6TbGchlMe7lf48K/VCu+4j/WyHiUwRyzks=
+github.com/copartner6412/input/validate v0.0.0-20240920171727-34746752d8e0 h1:ABt8l1rIdbBA4tlPW05q0c9UTYZrpzH0VIumkPFhOWY=
+github.com/copartner6412/input/validate v0.0.0-20240920171727-34746752d8e0/go.mod h1:8AL4saqTa6TbGchlMe7lf48K/VCu+4j/WyHiUwRyzks=
