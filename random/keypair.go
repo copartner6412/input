@@ -10,8 +10,39 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/copartner6412/input/validate"
 )
+
+// Algorithm defines the supported key generation algorithms.
+type Algorithm int
+
+// List of supported algorithms for key generation.
+const (
+	AlgorithmUntyped Algorithm = iota
+	AlgorithmED25519
+	AlgorithmECDSAP521
+	AlgorithmECDSAP384
+	AlgorithmECDSAP256
+	AlgorithmECDSAP224
+	AlgorithmRSA4096
+	AlgorithmRSA2048
+	AlgorithmRSA1024
+)
+
+var algorithmString = map[Algorithm]string{
+	AlgorithmUntyped:   "untyped",
+	AlgorithmED25519:   "ED25519",
+	AlgorithmECDSAP521: "ECDSA P521",
+	AlgorithmECDSAP384: "ECDSA P384",
+	AlgorithmECDSAP256: "ECDSA P256",
+	AlgorithmECDSAP224: "ECDSA P224",
+	AlgorithmRSA4096:   "RSA 4096",
+	AlgorithmRSA2048:   "RSA 2048",
+	AlgorithmRSA1024:   "RSA 1024",
+}
+
+func (a Algorithm) String() string {
+	return algorithmString[a]
+}
 
 const (
 	rsa1024 int = 1024
@@ -21,23 +52,23 @@ const (
 
 // KeyPair creates a public-private key pair based on the specified algorithm.
 // If you don't know what algorithm to use, insert zero to use the default (ED25519) key generation algorithm.
-func KeyPair(algorithm validate.Algorithm) (crypto.PublicKey, crypto.PrivateKey, error) {
+func KeyPair(algorithm Algorithm) (crypto.PublicKey, crypto.PrivateKey, error) {
 	switch algorithm {
-	case validate.AlgorithmUntyped, validate.AlgorithmED25519:
+	case AlgorithmUntyped, AlgorithmED25519:
 		return generateED25519KeyPair()
-	case validate.AlgorithmECDSAP521:
+	case AlgorithmECDSAP521:
 		return generateECDSAKeyPair(elliptic.P521())
-	case validate.AlgorithmECDSAP384:
+	case AlgorithmECDSAP384:
 		return generateECDSAKeyPair(elliptic.P384())
-	case validate.AlgorithmECDSAP256:
+	case AlgorithmECDSAP256:
 		return generateECDSAKeyPair(elliptic.P256())
-	case validate.AlgorithmECDSAP224:
+	case AlgorithmECDSAP224:
 		return generateECDSAKeyPair(elliptic.P224())
-	case validate.AlgorithmRSA4096:
+	case AlgorithmRSA4096:
 		return generateRSAKeyPair(rsa4096)
-	case validate.AlgorithmRSA2048:
+	case AlgorithmRSA2048:
 		return generateRSAKeyPair(rsa2048)
-	case validate.AlgorithmRSA1024:
+	case AlgorithmRSA1024:
 		return generateRSAKeyPair(rsa1024)
 	default:
 		return nil, nil, errors.New("unsupported key generation algorithm")

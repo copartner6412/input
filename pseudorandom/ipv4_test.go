@@ -25,6 +25,9 @@ func FuzzIPv4(f *testing.F) {
 		r2 := rand.New(rand.NewPCG(seed1, seed2))
 		cidr42 := pseudorandom.CIDRv4(r2)
 		ipv42, err := pseudorandom.IPv4(r2, cidr42.String())
+		if err != nil {
+			t.Fatalf("error regenerating the pseudo-random IPv4: %v", err)
+		}
 
 		if ipv41.String() != ipv42.String() {
 			t.Fatal("not deterministic")
