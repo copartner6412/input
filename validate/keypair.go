@@ -25,39 +25,30 @@ const (
 	AlgorithmRSA1024
 )
 
+var algorithmString = map[Algorithm]string{
+	AlgorithmUntyped:   "untyped",
+	AlgorithmED25519:   "ED25519",
+	AlgorithmECDSAP521: "ECDSA P521",
+	AlgorithmECDSAP384: "ECDSA P384",
+	AlgorithmECDSAP256: "ECDSA P256",
+	AlgorithmECDSAP224: "ECDSA P224",
+	AlgorithmRSA4096:   "RSA 4096",
+	AlgorithmRSA2048:   "RSA 2048",
+	AlgorithmRSA1024:   "RSA 1024",
+}
+
 func (a Algorithm) String() string {
-	switch a {
-	case AlgorithmUntyped:
-		return "untyped"
-	case AlgorithmED25519:
-		return "ED25519"
-	case AlgorithmECDSAP521:
-		return "ECDSA P521"
-	case AlgorithmECDSAP384:
-		return "ECDSA P384"
-	case AlgorithmECDSAP256:
-		return "ECDSA P256"
-	case AlgorithmECDSAP224:
-		return "ECDSA P224"
-	case AlgorithmRSA4096:
-		return "RSA 4096"
-	case AlgorithmRSA2048:
-		return "RSA 2048"
-	case AlgorithmRSA1024:
-		return "RSA 1024"
-	default:
-		return "unsupported"
-	}
+	return algorithmString[a]
 }
 
 func KeyPair(algorithm Algorithm, publicKey crypto.PublicKey, privateKey crypto.PrivateKey) error {
 	var nilErrs []error
 	if publicKey == nil {
-		nilErrs = append(nilErrs, errors.New("nil public key")) 
+		nilErrs = append(nilErrs, errors.New("nil public key"))
 	}
 
 	if privateKey == nil {
-		nilErrs = append(nilErrs, errors.New("nil private key")) 
+		nilErrs = append(nilErrs, errors.New("nil private key"))
 	}
 
 	if len(nilErrs) > 0 {
@@ -85,7 +76,7 @@ func KeyPair(algorithm Algorithm, publicKey crypto.PublicKey, privateKey crypto.
 		if !ok {
 			return fmt.Errorf("different algorithm type for private key, expected ED25519 but it's %v", algorithm.String())
 		}
-		
+
 		publicKey, ok := publicKey.(*ecdsa.PublicKey)
 		if !ok {
 			return fmt.Errorf("different algorithm type for public key, expected ED25519 but it's %v", algorithm.String())

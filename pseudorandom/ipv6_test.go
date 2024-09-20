@@ -1,4 +1,5 @@
 package pseudorandom_test
+
 import (
 	"math/rand/v2"
 	"testing"
@@ -27,7 +28,7 @@ func FuzzIPv6(f *testing.F) {
 		if err != nil {
 			t.Errorf("error generating a pseudo-random IPv6: %v", err)
 		}
-		
+
 		if ipv61.String() != ipv62.String() {
 			t.Error("not deterministic")
 		}

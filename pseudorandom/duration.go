@@ -19,5 +19,5 @@ func Duration(r *rand.Rand, minDuration, maxDuration time.Duration) (time.Durati
 		return 0, fmt.Errorf("minimum duration %v is less than maximum duration %v", minDuration, maxDuration)
 	}
 
-	return minDuration + time.Duration(r.Uint64N(uint64(maxDuration - minDuration) + 1)), nil
+	return minDuration + time.Duration(r.Uint64N(uint64(maxDuration-minDuration)+1)), nil
 }

@@ -19,7 +19,7 @@ const (
 func FuzzEmail(f *testing.F) {
 	f.Fuzz(func(t *testing.T, seed1, seed2 uint64, min, max uint, quotedLocalPart, ipDomainPart bool) {
 		r1, r2, minLength, maxLength := randoms(seed1, seed2, min, max, minEmailLengthAllowed, maxEmailLengthAllowed)
-		
+
 		if (maxLength > 74 || minLength < 48) && ipDomainPart {
 			t.Skip()
 		}

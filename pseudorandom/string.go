@@ -6,11 +6,11 @@ import (
 )
 
 const (
-	minStringLengthAllowed   = 1        // Minimum acceptable string length
-	maxStringLengthAllowed   = 8192     // Maximum acceptable string length
-	asciiLowerBound   = 32       // Start of printable ASCII range (space)
-	asciiUpperBound   = 126      // End of printable ASCII range (tilde ~)
-	unicodeUpperBound = 0x10FFFF // Maximum Unicode character
+	minStringLengthAllowed = 1        // Minimum acceptable string length
+	maxStringLengthAllowed = 8192     // Maximum acceptable string length
+	asciiLowerBound        = 32       // Start of printable ASCII range (space)
+	asciiUpperBound        = 126      // End of printable ASCII range (tilde ~)
+	unicodeUpperBound      = 0x10FFFF // Maximum Unicode character
 )
 
 // Behavior:

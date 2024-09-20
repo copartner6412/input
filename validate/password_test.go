@@ -285,4 +285,3 @@ func TestIsBadPassTrueForBadPasswords(t *testing.T) {
 		})
 	}
 }
-

@@ -91,5 +91,3 @@ func TestByteFailsForInvalidByteSlice(t *testing.T) {
 		})
 	}
 }
-
-

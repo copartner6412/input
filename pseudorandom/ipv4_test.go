@@ -1,4 +1,5 @@
 package pseudorandom_test
+
 import (
 	"math/rand/v2"
 	"testing"

@@ -17,7 +17,7 @@ func FuzzPassphrase(f *testing.F) {
 		if !digitSep && !specialSep {
 			t.Skip()
 		}
-		
+
 		r1, r2, minWords, maxWords := randoms(seed1, seed2, min, max, minPassphraseWordsAllowed, maxPassphraseWordsAllowed)
 
 		var minSeparatorLength uint

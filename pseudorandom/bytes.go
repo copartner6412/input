@@ -7,7 +7,7 @@ import (
 const (
 	minByteSliceLengthAllowed uint = 1
 	maxByteSliceLengthAllowed uint = 8192
-	maxByteNumber uint = 256
+	maxByteNumber             uint = 256
 )
 
 // Bytes generates a deterministic pseudo-random byte slice of a length between the specified minLength and maxLength, using the provided random source.

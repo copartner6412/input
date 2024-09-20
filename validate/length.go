@@ -28,7 +28,7 @@ func checkLength(length int, minLength, maxLength, minLengthAllowed, maxLengthAl
 			return errors.Join(errs...)
 		}
 	}
-	
+
 	if uint(length) < minLength {
 		return fmt.Errorf("length of %d is less than minimum length of %d %s", length, minLength, units)
 	}

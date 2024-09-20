@@ -8,19 +8,19 @@ import (
 )
 
 const (
-	minDomainLengthAllowed   uint = 1
-	maxDomainLengthAllowed   uint = 253
-	minTLDLengthAllowed uint = 2
-	maxTLDLengthAllowed uint = 2
-	ccTLDLength uint = 2
-	minDomainWithValidTLDLengthAllowed uint = minTLDLengthAllowed + 2
+	minDomainLengthAllowed               uint = 1
+	maxDomainLengthAllowed               uint = 253
+	minTLDLengthAllowed                  uint = 2
+	maxTLDLengthAllowed                  uint = 2
+	ccTLDLength                          uint = 2
+	minDomainWithValidTLDLengthAllowed   uint = minTLDLengthAllowed + 2
 	minDomainWithValidCCTLDLengthAllowed uint = ccTLDLength + 2
 )
 
 func FuzzDomainFunc(f *testing.F) {
 	f.Fuzz(func(t *testing.T, seed1, seed2 uint64, min, max uint) {
 		r1, r2, minLength, maxLength := randoms(seed1, seed2, min, max, minDomainLengthAllowed, maxDomainLengthAllowed)
-		
+
 		domain1, err := pseudorandom.Domain(r1, minLength, maxLength)
 		if err != nil {
 			t.Fatalf("error generating a pseudo-random domain: %v", err)
@@ -41,7 +41,6 @@ func FuzzDomainFunc(f *testing.F) {
 		}
 	})
 }
-
 
 func FuzzDomainWithValidTLD(f *testing.F) {
 	f.Fuzz(func(t *testing.T, seed1, seed2 uint64, min, max uint) {

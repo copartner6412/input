@@ -6,11 +6,11 @@ import (
 )
 
 const (
-	limitPorts           uint = 1 << 16
-	limitPortsWellKnown  uint = 1 << 10
-	limitPortsRegistered uint = 49151 + 1
-	minPortAllowed uint16 = 0
-	maxPortAllowed uint16 = 65535
+	limitPorts           uint   = 1 << 16
+	limitPortsWellKnown  uint   = 1 << 10
+	limitPortsRegistered uint   = 49151 + 1
+	minPortAllowed       uint16 = 0
+	maxPortAllowed       uint16 = 65535
 )
 
 // Port generates a deterministic pseudo-random port number in the range 0–65535.
@@ -47,4 +47,3 @@ func PortRegistered(r *rand.Rand) uint16 {
 func PortPrivate(r *rand.Rand) uint16 {
 	return uint16(r.UintN(limitPorts-limitPortsRegistered)) + uint16(limitPortsRegistered)
 }
-

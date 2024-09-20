@@ -8,7 +8,7 @@ import (
 )
 
 func FuzzCIDRv4(f *testing.F) {
-	f.Fuzz(func (t *testing.T, seed1, seed2 uint64) {
+	f.Fuzz(func(t *testing.T, seed1, seed2 uint64) {
 		r1 := rand.New(rand.NewPCG(seed1, seed2))
 		cidrv41 := pseudorandom.CIDRv4(r1)
 

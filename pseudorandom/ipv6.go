@@ -9,7 +9,7 @@ import (
 // IPv6 generates a deterministic pseudo-random IPv6 address within the specified IP network using the provided random source.
 func IPv6(r *rand.Rand, cidr string) (net.IP, error) {
 	if cidr == "" {
-		
+
 		// Generate a random IPv6 without CIDR restriction
 		ip := make([]byte, net.IPv6len)
 		for i := range ip {

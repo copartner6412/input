@@ -13,8 +13,8 @@ const (
 	maxEmailLocalPartLengthAllowed  uint = 64
 	minEmailDomainPartLengthAllowed uint = minDomainLengthAllowed
 	maxEmailDomainPartLengthAllowed uint = maxDomainLengthAllowed
-	minEmailDomainPartIPLength uint = 4 + 3 + 2 // 4 for numbers, 3 for dots, 2 for brackets
-	maxEmailDomainPartIPLength uint = 32 + 7 + 7 // 32 for hexadecimal numbers, 7 for brackets, 7 for [IPv6:]
+	minEmailDomainPartIPLength      uint = 4 + 3 + 2  // 4 for numbers, 3 for dots, 2 for brackets
+	maxEmailDomainPartIPLength      uint = 32 + 7 + 7 // 32 for hexadecimal numbers, 7 for brackets, 7 for [IPv6:]
 )
 
 // Email generates a deterministic pseudo-random valid email address using the provided random source.
@@ -64,7 +64,7 @@ func Email(r *rand.Rand, minLength, maxLength uint, quotedLocalPart, ipDomainPar
 
 		localPartLength = length - domainPartLength - 1 // 1 for @
 	} else {
-		localPartLength = minEmailLocalPartLengthAllowed + r.UintN(maxLocalPartLength - minEmailLocalPartLengthAllowed+1)
+		localPartLength = minEmailLocalPartLengthAllowed + r.UintN(maxLocalPartLength-minEmailLocalPartLengthAllowed+1)
 
 		domainPartLength = length - localPartLength - 1 // 1 for @
 

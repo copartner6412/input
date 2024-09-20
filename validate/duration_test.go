@@ -8,7 +8,7 @@ import (
 )
 
 func TestDurationSuccessfulForValidInput(t *testing.T) {
-	testCases := map[string]struct{
+	testCases := map[string]struct {
 		duration, minDuration, maxDuration time.Duration
 	}{
 		"minEqualMax": {
@@ -43,9 +43,8 @@ func TestDurationSuccessfulForValidInput(t *testing.T) {
 	}
 }
 
-
 func TestDurationFailsForInvalidInput(t *testing.T) {
-	testCases := map[string]struct{
+	testCases := map[string]struct {
 		duration, minDuration, maxDuration time.Duration
 	}{
 		"minGreaterThanMax": {

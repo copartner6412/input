@@ -15,7 +15,7 @@ const (
 func TestSubdomainSuccessfulForValidInput(t *testing.T) {
 	t.Parallel()
 
-	testCases := map[string]struct{
+	testCases := map[string]struct {
 		subdomain string
 		minLength uint
 		maxLength uint
@@ -81,11 +81,10 @@ func TestSubdomainSuccessfulForValidInput(t *testing.T) {
 	}
 }
 
-
 func TestSubdomainFailsForInvalidInput(t *testing.T) {
 	t.Parallel()
 
-	testCases := map[string]struct{
+	testCases := map[string]struct {
 		subdomain string
 		minLength uint
 		maxLength uint
@@ -163,4 +162,3 @@ func TestSubdomainFailsForInvalidInput(t *testing.T) {
 		})
 	}
 }
-

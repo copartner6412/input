@@ -12,7 +12,7 @@ func TLD(tld string, minLength, maxLength uint) error {
 	if err != nil {
 		return err
 	}
-	
+
 	_, ok := TLDs[tld]
 	if !ok {
 		return fmt.Errorf("\"%s\" not a valid TLD recognized by IANA", tld)
@@ -34,4 +34,3 @@ func CCTLD(tld string) error {
 	}
 	return nil
 }
-

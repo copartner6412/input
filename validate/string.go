@@ -9,8 +9,8 @@ import (
 const (
 	minStringLengthAllowed = 1    // Minimum acceptable string length
 	maxStringLengthAllowed = 8192 // Maximum acceptable string length
-	asciiLowerBound = 32   // Start of printable ASCII range (space)
-	asciiUpperBound = 126  // End of printable ASCII range (tilde ~)
+	asciiLowerBound        = 32   // Start of printable ASCII range (space)
+	asciiUpperBound        = 126  // End of printable ASCII range (tilde ~)
 )
 
 // String validates that a given string meets certain criteria related to length, character set (ASCII or Unicode).
@@ -31,7 +31,7 @@ func String(str string, minLength, maxLength uint, justASCII bool) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// Check if the string contains only ASCII characters, if required.
 	var unicodeErrs []error
 	if justASCII {

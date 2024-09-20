@@ -3,7 +3,7 @@ package validate
 const (
 	minTLDLengthAllowed uint = 2
 	maxTLDLengthAllowed uint = 18
-	ccTLDLength uint = 2
+	ccTLDLength         uint = 2
 )
 
 var TLDs = map[string]struct{}{

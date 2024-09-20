@@ -6,11 +6,11 @@ import (
 
 // Constants representing port range limits.
 const (
-	limitPorts           uint = 1 << 16   // 65,536 (total possible ports)
-	limitPortsWellKnown  uint = 1 << 10   // 1,024 (well-known ports range)
-	limitPortsRegistered uint = 49151 + 1 // 49,152 (registered ports range)
-	minPortAllowed uint16 = 0
-	maxPortAllowed uint16 = 65535
+	limitPorts           uint   = 1 << 16   // 65,536 (total possible ports)
+	limitPortsWellKnown  uint   = 1 << 10   // 1,024 (well-known ports range)
+	limitPortsRegistered uint   = 49151 + 1 // 49,152 (registered ports range)
+	minPortAllowed       uint16 = 0
+	maxPortAllowed       uint16 = 65535
 )
 
 func Port(port, minPort, maxPort uint16) error {
@@ -21,7 +21,7 @@ func Port(port, minPort, maxPort uint16) error {
 			return fmt.Errorf("maximum port can not be less than minimum port")
 		}
 	}
-	
+
 	if port < minPort {
 		return fmt.Errorf("port %d is less than lower limit of %d", port, minPort)
 	}
@@ -30,7 +30,8 @@ func Port(port, minPort, maxPort uint16) error {
 		return fmt.Errorf("port %d exceeds upper limit of %d", port, maxPort)
 	}
 
-	return nil}
+	return nil
+}
 
 // PortWellKnown checks if the port is in the well-known ports range (0-1023).
 // It returns an error if the port is outside the well-known range.

@@ -38,14 +38,14 @@ func Passphrase(r *rand.Rand, minWords, maxWords uint, separator string, capital
 		if maxWords < minWords {
 			return "", errors.New("maximum number of words allowed in the passphrase can not be less than minimum words allowed")
 		}
-	
+
 		if minWords < minPassphraseWordsAllowed || maxWords > maxPassphraseWordsAllowed {
 			return "", fmt.Errorf("number of words must be between 2 and 128")
 		}
 	}
 
 	// Determine the actual number of words in the passphrase to be generated.
-	wordNumber := minWords + r.UintN(maxWords - minWords + 1)
+	wordNumber := minWords + r.UintN(maxWords-minWords+1)
 
 	// Validate that the separator does not have a space.
 	if strings.Contains(separator, " ") {

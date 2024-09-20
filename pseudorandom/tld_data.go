@@ -8,7 +8,7 @@ package pseudorandom
 const (
 	minTLDLengthAllowed uint = 2
 	maxTLDLengthAllowed uint = 15
-	ccTLDLength uint = 2
+	ccTLDLength         uint = 2
 )
 
 var TLDs = map[string]struct{}{

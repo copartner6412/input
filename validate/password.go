@@ -12,7 +12,7 @@ import (
 
 const (
 	maxPasswordLengthAllowed uint   = 4096
-	badPassFilePath   string = "badpass3-5bytehash"
+	badPassFilePath          string = "badpass3-5bytehash"
 )
 
 var badPass struct {
@@ -174,8 +174,8 @@ func loadBadPass() error {
 
 // PasswordProfile defines the structure for specifying password complexity requirements for a specific service.
 type PasswordProfile struct {
-	minLength  uint
-	maxLength  uint
+	minLength      uint
+	maxLength      uint
 	requireLower   bool
 	requireUpper   bool
 	requireDigit   bool

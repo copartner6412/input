@@ -9,56 +9,56 @@ import (
 func TestTLDSuccessfulForValidTLD(t *testing.T) {
 	t.Parallel()
 
-	testCases := map[string]struct{
-		tld string
+	testCases := map[string]struct {
+		tld       string
 		minLength uint
 		maxLength uint
 	}{
 		// Test case with a valid TLD exactly at the minimum length
 		"validTLDAtMinLength": {
-			tld: "uk", // Example TLD, assuming minLength allows this
+			tld:       "uk", // Example TLD, assuming minLength allows this
 			minLength: minTLDLengthAllowed,
 			maxLength: maxTLDLengthAllowed,
 		},
 
 		// Test case with a valid TLD exactly at the maximum length
 		"validTLDAtMaxLength": {
-			tld: "international", // Example TLD, assuming maxLength allows this
+			tld:       "international", // Example TLD, assuming maxLength allows this
 			minLength: minTLDLengthAllowed,
 			maxLength: maxTLDLengthAllowed,
 		},
 
 		// Test case with a valid TLD within the valid range
 		"validTLDWithinRange": {
-			tld: "com",
+			tld:       "com",
 			minLength: minTLDLengthAllowed,
 			maxLength: maxTLDLengthAllowed,
 		},
 
 		// Test case with a valid TLD exactly at a boundary condition
 		"validTLDAtBoundaryCondition": {
-			tld: "xyz", // Example TLD, ensure this is a valid TLD in TLDs map
+			tld:       "xyz", // Example TLD, ensure this is a valid TLD in TLDs map
 			minLength: 3,
 			maxLength: 3,
 		},
 
 		// Test case with a valid TLD at the upper boundary of length
 		"validTLDAtUpperBoundary": {
-			tld: "museum", // Example TLD, assuming it’s a valid TLD
+			tld:       "museum", // Example TLD, assuming it’s a valid TLD
 			minLength: minTLDLengthAllowed,
 			maxLength: 7,
 		},
 
 		// Test case with a valid TLD with exactly the allowed maximum length
 		"validTLDExactlyMaxLength": {
-			tld: "technology", // Example TLD, assuming it’s a valid TLD
+			tld:       "technology", // Example TLD, assuming it’s a valid TLD
 			minLength: minTLDLengthAllowed,
 			maxLength: 10,
 		},
 
 		// Test case with a valid TLD within allowed range with varying lengths
 		"validTLDWithVariedLength": {
-			tld: "info",
+			tld:       "info",
 			minLength: 2,
 			maxLength: 4,
 		},
@@ -74,14 +74,13 @@ func TestTLDSuccessfulForValidTLD(t *testing.T) {
 	}
 }
 
-
 func TestTLDFailsForInvalidTLD(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		tld        string
-		minLength  uint
-		maxLength  uint
+		tld       string
+		minLength uint
+		maxLength uint
 	}{
 		// Case where the TLD is empty
 		"emptyTLD": {
@@ -141,16 +140,16 @@ func TestCCTLDSuccessfulForValidTLD(t *testing.T) {
 
 	testCases := map[string]string{
 		// Example of a valid ccTLD from the list
-		"validCCtldForUnitedKingdom": "uk",  // Assuming "uk" is in Countries
+		"validCCtldForUnitedKingdom": "uk", // Assuming "uk" is in Countries
 
 		// Example of another valid ccTLD
-		"validCCtldForGermany": "de",  // Assuming "de" is in Countries
+		"validCCtldForGermany": "de", // Assuming "de" is in Countries
 
 		// Example of a valid ccTLD for a large country
-		"validCCtldForBrazil": "br",  // Assuming "br" is in Countries
+		"validCCtldForBrazil": "br", // Assuming "br" is in Countries
 
 		// Example of a valid ccTLD for a small country
-		"validCCtldForSanMarino": "sm",  // Assuming "sm" is in Countries
+		"validCCtldForSanMarino": "sm", // Assuming "sm" is in Countries
 	}
 
 	for name, tc := range testCases {
@@ -162,7 +161,6 @@ func TestCCTLDSuccessfulForValidTLD(t *testing.T) {
 		})
 	}
 }
-
 
 func TestCCTLDFailsForInvalidTLD(t *testing.T) {
 	t.Parallel()

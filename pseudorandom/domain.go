@@ -4,15 +4,14 @@ import (
 	"fmt"
 	"math/rand/v2"
 	"strings"
-
 )
 
 const (
-	minDomainLengthAllowed   uint = 1
-	maxDomainLengthAllowed   uint = 253
+	minDomainLengthAllowed             uint = 1
+	maxDomainLengthAllowed             uint = 253
 	minDomainWithValidTLDLengthAllowed uint = minTLDLengthAllowed + 2
-	mindomainWithValidccTLDLength uint = ccTLDLength + 2
-	maxSubdomainCount uint = 127 // (253 + 1) / 2
+	mindomainWithValidccTLDLength      uint = ccTLDLength + 2
+	maxSubdomainCount                  uint = 127 // (253 + 1) / 2
 )
 
 // Domain generates a deterministic pseudo-random Internet domain name using the provided random source.
@@ -52,12 +51,12 @@ func Domain(r *rand.Rand, minLength, maxLength uint) (domain string, err error) 
 
 		trackLength += subdomainLength // Update the total length with the new subdomain.
 
-		if trackLength == length - 1 {
+		if trackLength == length-1 {
 			if subdomainLength == maxSubdomainLengthAllowed {
-				subdomains[len(subdomains) - 1] = subdomain[:maxSubdomainLengthAllowed - 1]
-				
-				if strings.HasSuffix(subdomains[len(subdomains) - 1], "-") {
-					subdomains[len(subdomains) - 1] = subdomain[:maxSubdomainLengthAllowed - 2] + string(lowerAlphanumericalRunes[r.IntN(len(lowerAlphanumericalRunes))])
+				subdomains[len(subdomains)-1] = subdomain[:maxSubdomainLengthAllowed-1]
+
+				if strings.HasSuffix(subdomains[len(subdomains)-1], "-") {
+					subdomains[len(subdomains)-1] = subdomain[:maxSubdomainLengthAllowed-2] + string(lowerAlphanumericalRunes[r.IntN(len(lowerAlphanumericalRunes))])
 				}
 
 				lastSubdomain, err := Subdomain(r, 1, 1)
@@ -69,24 +68,24 @@ func Domain(r *rand.Rand, minLength, maxLength uint) (domain string, err error) 
 
 				break
 			} else {
-				lastSubdomain, err := Subdomain(r, uint(len(subdomain)) + 1, uint(len(subdomain)) + 1)
+				lastSubdomain, err := Subdomain(r, uint(len(subdomain))+1, uint(len(subdomain))+1)
 				if err != nil {
 					return "", fmt.Errorf("error generating the last pseudo-random subdomain: %w", err)
 				}
 
-				subdomains[len(subdomains) - 1] = lastSubdomain
+				subdomains[len(subdomains)-1] = lastSubdomain
 
 				break
 			}
 		} else if trackLength >= length {
 
-			lastSubdomain := subdomain[:subdomainLength - (trackLength - length)]
+			lastSubdomain := subdomain[:subdomainLength-(trackLength-length)]
 
 			if strings.HasSuffix(lastSubdomain, "-") {
 				lastSubdomain = lastSubdomain[:len(lastSubdomain)-1] + string(lowerAlphanumericalRunes[r.IntN(len(lowerAlphanumericalRunes))])
 			}
 
-			subdomains[len(subdomains) - 1] = lastSubdomain
+			subdomains[len(subdomains)-1] = lastSubdomain
 
 			break // Stop adding subdomains if adding more would exceed the total allowed length.
 		} else {
@@ -100,7 +99,6 @@ func Domain(r *rand.Rand, minLength, maxLength uint) (domain string, err error) 
 	return domain, nil
 }
 
-
 // DomainWithValidTLD generates a deterministic pseudo-random domain name and replaces the last part with a valid top-level domain (TLD).
 func DomainWithValidTLD(r *rand.Rand, minLength, maxLength uint) (domain string, err error) {
 	length, err := checkLength(r, minLength, maxLength, minDomainWithValidTLDLengthAllowed, maxDomainLengthAllowed)
@@ -113,7 +111,7 @@ func DomainWithValidTLD(r *rand.Rand, minLength, maxLength uint) (domain string,
 		maxTLDLength = maxTLDLengthAllowed
 	}
 
-	tldLength := minTLDLengthAllowed + r.UintN(maxTLDLength - minTLDLengthAllowed + 1)
+	tldLength := minTLDLengthAllowed + r.UintN(maxTLDLength-minTLDLengthAllowed+1)
 
 	tld, err := TLD(r, tldLength, tldLength)
 	if err != nil {
@@ -129,7 +127,6 @@ func DomainWithValidTLD(r *rand.Rand, minLength, maxLength uint) (domain string,
 
 	parts := []string{firstPart, tld}
 	domain = strings.Join(parts, ".")
-
 
 	return domain, nil
 }
@@ -151,7 +148,6 @@ func DomainWithValidCCTLD(r *rand.Rand, minLength, maxLength uint) (domain strin
 	}
 	parts := []string{firstPart, ccTLD}
 	domain = strings.Join(parts, ".")
-
 
 	return domain, nil
 }

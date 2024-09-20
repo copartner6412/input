@@ -9,7 +9,7 @@ import (
 const (
 	minDomainLengthAllowed uint = 1
 	maxDomainLengthAllowed uint = 253
-	maxSubdomainCount uint = 127 // (253 + 1) / 2
+	maxSubdomainCount      uint = 127 // (253 + 1) / 2
 )
 
 // https://developers.cloudflare.com/dns/manage-dns-records/reference/dns-record-types/
@@ -71,7 +71,7 @@ func DomainWithValidTLD(domain string, minLength, maxLength uint) error {
 		// If all checks pass, return nil indicating the TLD is valid
 		return fmt.Errorf("tld \"%s\" not found in valid TLDs", tldPart)
 	}
-	
+
 	return nil
 }
 
@@ -82,7 +82,7 @@ func DomainWithValidCCTLD(domain string, minLength, maxLength uint) error {
 	if err != nil {
 		return err
 	}
-	
+
 	parts := strings.Split(domain, ".")
 	tld := parts[len(parts)-1]
 

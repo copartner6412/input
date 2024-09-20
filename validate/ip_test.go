@@ -9,74 +9,74 @@ import (
 func TestIPSuccessfulForValidInput(t *testing.T) {
 	t.Parallel()
 
-	testCases := map[string]struct{
+	testCases := map[string]struct {
 		ip   string
 		cidr string
 	}{
 		// Test a valid IPv4 address without CIDR
 		"validIPv4WithoutCIDR": {
 			ip:   "192.168.1.1",
-			cidr: "",  // No CIDR provided, should pass as valid IP
+			cidr: "", // No CIDR provided, should pass as valid IP
 		},
 
 		// Test a valid IPv6 address without CIDR
 		"validIPv6WithoutCIDR": {
 			ip:   "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
-			cidr: "",  // No CIDR provided, should pass as valid IP
+			cidr: "", // No CIDR provided, should pass as valid IP
 		},
 
 		// Test a valid IPv4 address within a CIDR range
 		"validIPv4WithinCIDR": {
 			ip:   "192.168.1.10",
-			cidr: "192.168.1.0/24",  // IP within range
+			cidr: "192.168.1.0/24", // IP within range
 		},
 
 		// Test a valid IPv6 address within a CIDR range
 		"validIPv6WithinCIDR": {
 			ip:   "2001:db8::1",
-			cidr: "2001:db8::/32",  // IP within range
+			cidr: "2001:db8::/32", // IP within range
 		},
 
 		// Test a valid IPv4 address at the boundary of a CIDR range (network address)
 		"validIPv4AtBoundaryNetworkAddress": {
 			ip:   "10.0.0.0",
-			cidr: "10.0.0.0/8",  // Network address, valid boundary case
+			cidr: "10.0.0.0/8", // Network address, valid boundary case
 		},
 
 		// Test a valid IPv4 address at the boundary of a CIDR range (broadcast address)
 		"validIPv4AtBoundaryBroadcastAddress": {
 			ip:   "10.255.255.255",
-			cidr: "10.0.0.0/8",  // Broadcast address, valid boundary case
+			cidr: "10.0.0.0/8", // Broadcast address, valid boundary case
 		},
 
 		// Test a valid IPv6 address at the boundary of a CIDR range
 		"validIPv6AtBoundaryNetworkAddress": {
 			ip:   "2001:db8::",
-			cidr: "2001:db8::/32",  // Network address, valid boundary case
+			cidr: "2001:db8::/32", // Network address, valid boundary case
 		},
 
 		// Test a valid IPv4 CIDR range with exact match
 		"validIPv4ExactMatchInCIDR": {
 			ip:   "10.0.0.1",
-			cidr: "10.0.0.1/32",  // IP matches exactly with CIDR
+			cidr: "10.0.0.1/32", // IP matches exactly with CIDR
 		},
 
 		// Test a valid IPv6 CIDR range with exact match
 		"validIPv6ExactMatchInCIDR": {
 			ip:   "2001:db8::1",
-			cidr: "2001:db8::1/128",  // IP matches exactly with CIDR
+			cidr: "2001:db8::1/128", // IP matches exactly with CIDR
 		},
 
 		// Test a valid IPv4 with classless inter-domain routing (CIDR block)
 		"validIPv4WithCIDRBlock": {
 			ip:   "172.16.5.4",
-			cidr: "172.16.0.0/12",  // Class B private network range
+			cidr: "172.16.0.0/12", // Class B private network range
 		},
 
 		// Test a valid IPv6 with classless inter-domain routing (CIDR block)
 		"validIPv6WithCIDRBlock": {
 			ip:   "fe80::1",
-			cidr: "fe80::/10",  // Link-local IPv6 range
+			cidr: "fe80::/10", // Link-local IPv6 range
 		},
 	}
 
@@ -91,11 +91,10 @@ func TestIPSuccessfulForValidInput(t *testing.T) {
 	}
 }
 
-
 func TestIPFailsForInvalidInput(t *testing.T) {
 	t.Parallel()
 
-	testCases := map[string]struct{
+	testCases := map[string]struct {
 		ip   string
 		cidr string
 	}{
@@ -164,4 +163,3 @@ func TestIPFailsForInvalidInput(t *testing.T) {
 		})
 	}
 }
-

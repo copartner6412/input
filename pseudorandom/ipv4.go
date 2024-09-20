@@ -6,7 +6,6 @@ import (
 	"net"
 )
 
-
 // IPv4 generates a deterministic pseudo-random IPv4 address within the specified IP network using the provided random source.
 func IPv4(r *rand.Rand, cidr string) (net.IP, error) {
 	if cidr == "" {
@@ -26,14 +25,14 @@ func IPv4(r *rand.Rand, cidr string) (net.IP, error) {
 
 	// Convert IP to uint32 for easy arithmetic
 	ipInt := ipToUint32(ip)
-	
+
 	// Calculate the size of the network
 	ones, bits := ipNet.Mask.Size()
 	size := uint32(1 << (bits - ones))
-	
+
 	// Generate a random number within the network size
 	random := r.Uint32N(size)
-	
+
 	// Add the random number to the IP
 	result := uint32ToIP(ipInt + random)
 

@@ -44,7 +44,7 @@ func FuzzPasswordFunc(f *testing.F) {
 		if err != nil {
 			t.Fatalf("error generating a pseudo-random password: %v", err)
 		}
-		
+
 		err = validate.Password(password1, minLength, maxLength, lower, upper, digit, special)
 		if err != nil {
 			t.Fatalf("expected no error for a valid pseudo-random password %s: but got error: %v", password1, err)
@@ -220,4 +220,3 @@ func TestPasswordForFailsForNotComplexInput(t *testing.T) {
 		})
 	}
 }
-

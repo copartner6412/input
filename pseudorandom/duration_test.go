@@ -10,7 +10,7 @@ import (
 )
 
 func FuzzDuration(f *testing.F) {
-	f.Fuzz(func (t *testing.T, seed1, seed2 uint64, min, max uint)  {
+	f.Fuzz(func(t *testing.T, seed1, seed2 uint64, min, max uint) {
 		r1 := rand.New(rand.NewPCG(seed1, seed2))
 		minDuration := time.Duration(min)
 		maxDuration := minDuration + time.Duration(max)
@@ -27,7 +27,7 @@ func FuzzDuration(f *testing.F) {
 		if err != nil {
 			t.Fatalf("error regenerating the pseudo-random duration: %v", err)
 		}
-		
+
 		if duration1 != duration2 {
 			t.Fatal("not deterministic")
 		}
