@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/copartner6412/input/random"
+	"github.com/copartner6412/input/validate"
 )
 
 const (
@@ -14,9 +15,14 @@ const (
 func FuzzBigInteger(f *testing.F) {
 	f.Fuzz(func (t *testing.T, min, max uint)  {
 		minBitSize, maxBitSize := randoms(min, max, minBitSizeAllowed, maxBitSizeAllowed)
-		_, err := random.BigInteger(minBitSize, maxBitSize)
+		number, err := random.BigInteger(minBitSize, maxBitSize)
 		if err != nil {
 			t.Fatalf("error generating a cryptographically-secure random big integer: %v", err)
+		}
+
+		err = validate.BigInteger(number, minBitSize, maxBitSize)
+		if err != nil {
+			t.Fatal(err)
 		}
 	})
 }

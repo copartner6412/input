@@ -6,3 +6,7 @@ github.com/copartner6412/input/validate v0.0.0-20240919193757-6c855e0158e9 h1:IV
 github.com/copartner6412/input/validate v0.0.0-20240919193757-6c855e0158e9/go.mod h1:8AL4saqTa6TbGchlMe7lf48K/VCu+4j/WyHiUwRyzks=
 github.com/copartner6412/input/validate v0.0.0-20240920171727-34746752d8e0 h1:ABt8l1rIdbBA4tlPW05q0c9UTYZrpzH0VIumkPFhOWY=
 github.com/copartner6412/input/validate v0.0.0-20240920171727-34746752d8e0/go.mod h1:8AL4saqTa6TbGchlMe7lf48K/VCu+4j/WyHiUwRyzks=
+github.com/copartner6412/input/validate v0.0.0-20240920200928-c52bd14381be h1:+WmnOoidadg5UWYsks/odB55AvnmPU9398MRB8iMEuU=
+github.com/copartner6412/input/validate v0.0.0-20240920200928-c52bd14381be/go.mod h1:8AL4saqTa6TbGchlMe7lf48K/VCu+4j/WyHiUwRyzks=
+github.com/copartner6412/input/validate v0.0.0-20240921092442-f0c2b04579df h1:DC/xaC88h4OSvCOAlZLVZD431+UCHKF6ZoDL3/ne2IQ=
+github.com/copartner6412/input/validate v0.0.0-20240921092442-f0c2b04579df/go.mod h1:8AL4saqTa6TbGchlMe7lf48K/VCu+4j/WyHiUwRyzks=
