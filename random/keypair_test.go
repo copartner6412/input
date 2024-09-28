@@ -1,6 +1,7 @@
 package random_test
 
 import (
+	"crypto/rand"
 	"testing"
 
 	"github.com/copartner6412/input/random"
@@ -8,10 +9,10 @@ import (
 )
 
 func FuzzKeyPair(f *testing.F) {
-	f.Fuzz(func (t *testing.T, a uint)  {
+	f.Fuzz(func(t *testing.T, a uint) {
 		algorithm := random.Algorithm(int(a % 9))
 
-		publicKey1, privateKey1, err := random.KeyPair(algorithm)
+		publicKey1, privateKey1, err := random.KeyPair(rand.Reader, algorithm)
 		if err != nil {
 			t.Fatalf("error generating a pseudo-random key pair of type %s: %v", algorithm.String(), err)
 		}

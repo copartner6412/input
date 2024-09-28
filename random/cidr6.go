@@ -3,16 +3,17 @@ package random
 import (
 	"crypto/rand"
 	"fmt"
+	"io"
 	"math/big"
 	"net"
 )
 
 // CIDRv6 generates a deterministic pseudo-random IPv6 CIDR (IPv6 network) using the provided random source.
-func CIDRv6() (net.IPNet, error) {
+func CIDRv6(randomness io.Reader) (net.IPNet, error) {
 	// Generate a random IPv6 address
 	ip := make([]byte, 16)
 	for i := range ip {
-		random1, err := rand.Int(rand.Reader, big.NewInt(int64(maxByteNumber)))
+		random1, err := rand.Int(randomness, big.NewInt(int64(maxByteNumber)))
 		if err != nil {
 			return net.IPNet{}, fmt.Errorf("error generating random number for calculating byte: %w", err)
 		}
@@ -20,7 +21,7 @@ func CIDRv6() (net.IPNet, error) {
 	}
 
 	// Generate a random subnet mask length (between 8 and 126)
-	random2, err := rand.Int(rand.Reader, big.NewInt(119))
+	random2, err := rand.Int(randomness, big.NewInt(119))
 	if err != nil {
 		return net.IPNet{}, fmt.Errorf("error generating random number for calculating mask length: %w", err)
 	}

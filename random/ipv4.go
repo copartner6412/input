@@ -3,17 +3,18 @@ package random
 import (
 	"crypto/rand"
 	"fmt"
+	"io"
 	"math/big"
 	"net"
 )
 
 // IPv4 generates a random IPv4 address of type net.IP and returns an error.
-func IPv4(cidr string) (net.IP, error) {
+func IPv4(randomness io.Reader, cidr string) (net.IP, error) {
 	if cidr == "" {
 		// Generate a random IPv4 without CIDR restriction
 		ip := make([]byte, 4)
 		for i := range ip {
-			random1, err := rand.Int(rand.Reader, big.NewInt(int64(maxByteNumber)))
+			random1, err := rand.Int(randomness, big.NewInt(int64(maxByteNumber)))
 			if err != nil {
 				return net.IP{}, fmt.Errorf("error generating a random number for byte: %w", err)
 			}
@@ -32,17 +33,17 @@ func IPv4(cidr string) (net.IP, error) {
 
 	// Convert IP to uint32 for easy arithmetic
 	ipUint32 := ipToUint32(ip)
-	
+
 	// Calculate the size of the network
 	ones, bits := ipNet.Mask.Size()
 	size := uint32(1 << (bits - ones))
-	
+
 	// Generate a random number within the network size
-	random2, err := rand.Int(rand.Reader, big.NewInt(int64(size)))
+	random2, err := rand.Int(randomness, big.NewInt(int64(size)))
 	if err != nil {
 		return nil, fmt.Errorf("error generating a random number for calculating the IPv4: %w", err)
 	}
-	
+
 	// Add the random number to the IP
 	result := uint32ToIP(ipUint32 + uint32(random2.Int64()))
 

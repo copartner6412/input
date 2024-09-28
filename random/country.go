@@ -3,11 +3,12 @@ package random
 import (
 	"crypto/rand"
 	"fmt"
+	"io"
 	"math/big"
 )
 
 // CountryName returns a random valid country name.
-func CountryName() (string, error) {
+func CountryName(randomness io.Reader) (string, error) {
 	// Pre-allocate the slice with the exact size.
 	countriesSlice := make([]string, 0, len(Countries))
 	for country := range Countries {
@@ -15,7 +16,7 @@ func CountryName() (string, error) {
 	}
 
 	// Generate a random index within the range of available countries.
-	index, err := rand.Int(rand.Reader, big.NewInt(int64(len(countriesSlice))))
+	index, err := rand.Int(randomness, big.NewInt(int64(len(countriesSlice))))
 	if err != nil {
 		return "", fmt.Errorf("error generating random index: %w", err)
 	}
@@ -25,7 +26,7 @@ func CountryName() (string, error) {
 }
 
 // CountryCode2 returns a random valid 2-letter country code.
-func CountryCode2() (string, error) {
+func CountryCode2(randomness io.Reader) (string, error) {
 	// Pre-allocate the slice with the exact size.
 	code2Slice := make([]string, 0, len(Countries))
 	for _, country := range Countries {
@@ -33,7 +34,7 @@ func CountryCode2() (string, error) {
 	}
 
 	// Generate a random index within the range of available countries.
-	index, err := rand.Int(rand.Reader, big.NewInt(int64(len(code2Slice))))
+	index, err := rand.Int(randomness, big.NewInt(int64(len(code2Slice))))
 	if err != nil {
 		return "", fmt.Errorf("error generating random index: %w", err)
 	}
@@ -43,7 +44,7 @@ func CountryCode2() (string, error) {
 }
 
 // CountryCode3 returns a random valid 3-letter country code.
-func CountryCode3() (string, error) {
+func CountryCode3(randomness io.Reader) (string, error) {
 	// Pre-allocate the slice with the exact size.
 	code3Slice := make([]string, 0, len(Countries))
 	for _, country := range Countries {
@@ -51,7 +52,7 @@ func CountryCode3() (string, error) {
 	}
 
 	// Generate a random index within the range of available countries.
-	index, err := rand.Int(rand.Reader, big.NewInt(int64(len(code3Slice))))
+	index, err := rand.Int(randomness, big.NewInt(int64(len(code3Slice))))
 	if err != nil {
 		return "", fmt.Errorf("error generating random index: %w", err)
 	}

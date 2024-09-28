@@ -3,13 +3,14 @@ package random
 import (
 	"crypto/rand"
 	"fmt"
+	"io"
 	"math/big"
 )
 
 const (
 	minByteSliceLengthAllowed uint = 1
 	maxByteSliceLengthAllowed uint = 8192
-	maxByteNumber uint = 256
+	maxByteNumber             uint = 256
 )
 
 // Bytes generates a random byte slice of a length between the specified minLength and maxLength.
@@ -21,8 +22,8 @@ const (
 // Returns:
 //   - A random byte slice with a length between minLength and maxLength, inclusive.
 //   - An error if minLength is less than the allowed minimum, maxLength exceeds the allowed maximum, or if maxLength is less than minLength.
-func Bytes(minLength, maxLength uint) ([]byte, error) {
-	length, err := checkLength(minLength, maxLength, minByteSliceLengthAllowed, maxByteSliceLengthAllowed)
+func Bytes(randomness io.Reader, minLength, maxLength uint) ([]byte, error) {
+	length, err := checkLength(randomness, minLength, maxLength, minByteSliceLengthAllowed, maxByteSliceLengthAllowed)
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +33,7 @@ func Bytes(minLength, maxLength uint) ([]byte, error) {
 
 	// Generate random bytes using the provided rand source and fill the slice
 	for i := 0; i < int(length); i++ {
-		random2, err := rand.Int(rand.Reader, big.NewInt(256))
+		random2, err := rand.Int(randomness, big.NewInt(256))
 		if err != nil {
 			return nil, fmt.Errorf("error generating a random number for byte value: %v", err)
 		}

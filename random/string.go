@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
+	"io"
 	"math/big"
 	"unicode"
 )
@@ -30,7 +31,7 @@ const (
 //   - A random string of length between minLength and maxLength using the provided random source.
 //   - An error if the length constraints are violated, such as when maxLength is less than minLength,
 //     or if minLength is less than 1, or maxLength exceeds 8192.
-func String(minLength, maxLength uint, justASCII bool) (string, error) {
+func String(randomness io.Reader, minLength, maxLength uint, justASCII bool) (string, error) {
 	if maxLength < minLength {
 		return "", errors.New("maximum length can not be less than minimum length")
 	}
@@ -45,7 +46,7 @@ func String(minLength, maxLength uint, justASCII bool) (string, error) {
 	}
 
 	// Determine the length of the string to generate.
-	random1, err := rand.Int(rand.Reader, big.NewInt(int64(maxLength-minLength+1)))
+	random1, err := rand.Int(randomness, big.NewInt(int64(maxLength-minLength+1)))
 	if err != nil {
 		return "", fmt.Errorf("error generating a random number for calculating string length: %w", err)
 	}
@@ -58,14 +59,14 @@ func String(minLength, maxLength uint, justASCII bool) (string, error) {
 		var char rune
 		if justASCII {
 			// Generate a random printable ASCII character.
-			random2, err := rand.Int(rand.Reader, big.NewInt(int64(asciiUpperBound-asciiLowerBound+1)))
+			random2, err := rand.Int(randomness, big.NewInt(int64(asciiUpperBound-asciiLowerBound+1)))
 			if err != nil {
 				return "", fmt.Errorf("error generating a random number for calculating ASCII rune: %w", err)
 			}
 			char = rune(asciiLowerBound + random2.Int64())
 		} else {
 			// Generate a random Unicode character.
-			random3, err := rand.Int(rand.Reader, big.NewInt(int64(unicodeUpperBound)))
+			random3, err := rand.Int(randomness, big.NewInt(int64(unicodeUpperBound)))
 			if err != nil {
 				return "", fmt.Errorf("error generating a random number for calculating unicode rune: %w", err)
 			}

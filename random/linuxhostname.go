@@ -3,6 +3,7 @@ package random
 import (
 	"crypto/rand"
 	"fmt"
+	"io"
 	"math/big"
 )
 
@@ -15,8 +16,8 @@ const (
 
 // LinuxHostname generates a random Linux hostname.
 // A valid hostname has a length between 1 and 64 characters, begins with letter and ends with an alphanumeric character, and may contain hyphens in the middle.
-func LinuxHostname(minLength, maxLength uint) (string, error) {
-	length, err := checkLength(minLength, maxLength, minLinuxHostnameLengthAllowed, maxLinuxHostnameLengthAllowed)
+func LinuxHostname(randomness io.Reader, minLength, maxLength uint) (string, error) {
+	length, err := checkLength(randomness, minLength, maxLength, minLinuxHostnameLengthAllowed, maxLinuxHostnameLengthAllowed)
 	if err != nil {
 		return "", err
 	}
@@ -27,7 +28,7 @@ func LinuxHostname(minLength, maxLength uint) (string, error) {
 	// Create a rune slice to hold the generated hostname.
 	hostname := make([]rune, length)
 
-	random1, err := rand.Int(rand.Reader, big.NewInt(int64(len(lowerCaseRunes))))
+	random1, err := rand.Int(randomness, big.NewInt(int64(len(lowerCaseRunes))))
 	if err != nil {
 		return "", fmt.Errorf("error generating a random index for the first character: %w", err)
 	}
@@ -37,7 +38,7 @@ func LinuxHostname(minLength, maxLength uint) (string, error) {
 
 	// Middle characters: can include hyphens.
 	for i := 1; i < int(length)-1; i++ {
-		random2, err := rand.Int(rand.Reader, big.NewInt(int64(len(allowedCharacters))))
+		random2, err := rand.Int(randomness, big.NewInt(int64(len(allowedCharacters))))
 		if err != nil {
 			return "", fmt.Errorf("error generating a random index for a middle character: %w", err)
 		}
@@ -46,7 +47,7 @@ func LinuxHostname(minLength, maxLength uint) (string, error) {
 
 	// Last character: must be alphanumeric (if the total length is greater than 1).
 	if length > 1 {
-		random3, err := rand.Int(rand.Reader, big.NewInt(int64(len(lowerAlphanumericalRunes))))
+		random3, err := rand.Int(randomness, big.NewInt(int64(len(lowerAlphanumericalRunes))))
 		if err != nil {
 			return "", fmt.Errorf("error generating a random index for the last character: %w", err)
 		}

@@ -1,6 +1,7 @@
 package random_test
 
 import (
+	"crypto/rand"
 	"testing"
 
 	"github.com/copartner6412/input/random"
@@ -11,7 +12,7 @@ func FuzzBytes(f *testing.F) {
 	f.Fuzz(func(t *testing.T, min, max uint) {
 		minLength := min%(8192) + 1
 		maxLength := minLength + max%(8192-minLength+1)
-		bytes, err := random.Bytes(minLength, maxLength)
+		bytes, err := random.Bytes(rand.Reader, minLength, maxLength)
 		if err != nil {
 			t.Fatalf("error generating a random byte slice: %v", err)
 		}

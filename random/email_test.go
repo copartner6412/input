@@ -1,6 +1,7 @@
 package random_test
 
 import (
+	"crypto/rand"
 	"testing"
 
 	"github.com/copartner6412/input/random"
@@ -19,12 +20,12 @@ const (
 func FuzzEmail(f *testing.F) {
 	f.Fuzz(func(t *testing.T, min, max uint, quotedLocalPart, ipDomainPart bool) {
 		minLength, maxLength := randoms(min, max, minEmailLengthAllowed, maxEmailLengthAllowed)
-		
+
 		if (maxLength > 74 || minLength < 48) && ipDomainPart {
 			t.Skip()
 		}
 
-		email1, err := random.Email(minLength, maxLength, quotedLocalPart, ipDomainPart)
+		email1, err := random.Email(rand.Reader, minLength, maxLength, quotedLocalPart, ipDomainPart)
 		if err != nil {
 			t.Fatalf("error generating a random E-mail: %v", err)
 		}

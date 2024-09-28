@@ -1,6 +1,7 @@
 package random_test
 
 import (
+	"crypto/rand"
 	"testing"
 
 	"github.com/copartner6412/input/random"
@@ -15,7 +16,7 @@ const (
 func FuzzLinuxHostname(f *testing.F) {
 	f.Fuzz(func(t *testing.T, min, max uint) {
 		minLength, maxLength := randoms(min, max, minLinuxHostnameLengthAllowed, maxLinuxHostnameLengthAllowed)
-		hostname, err := random.LinuxHostname(minLength, maxLength)
+		hostname, err := random.LinuxHostname(rand.Reader, minLength, maxLength)
 		if err != nil {
 			t.Fatalf("error generating a random Linux hostname: %v", err)
 		}

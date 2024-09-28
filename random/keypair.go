@@ -5,11 +5,10 @@ import (
 	"crypto/ecdsa"
 	"crypto/ed25519"
 	"crypto/elliptic"
-	"crypto/rand"
 	"crypto/rsa"
 	"errors"
 	"fmt"
-
+	"io"
 )
 
 // Algorithm defines the supported key generation algorithms.
@@ -52,32 +51,32 @@ const (
 
 // KeyPair creates a public-private key pair based on the specified algorithm.
 // If you don't know what algorithm to use, insert zero to use the default (ED25519) key generation algorithm.
-func KeyPair(algorithm Algorithm) (crypto.PublicKey, crypto.PrivateKey, error) {
+func KeyPair(randomness io.Reader, algorithm Algorithm) (crypto.PublicKey, crypto.PrivateKey, error) {
 	switch algorithm {
 	case AlgorithmUntyped, AlgorithmED25519:
-		return generateED25519KeyPair()
+		return generateED25519KeyPair(randomness)
 	case AlgorithmECDSAP521:
-		return generateECDSAKeyPair(elliptic.P521())
+		return generateECDSAKeyPair(randomness, elliptic.P521())
 	case AlgorithmECDSAP384:
-		return generateECDSAKeyPair(elliptic.P384())
+		return generateECDSAKeyPair(randomness, elliptic.P384())
 	case AlgorithmECDSAP256:
-		return generateECDSAKeyPair(elliptic.P256())
+		return generateECDSAKeyPair(randomness, elliptic.P256())
 	case AlgorithmECDSAP224:
-		return generateECDSAKeyPair(elliptic.P224())
+		return generateECDSAKeyPair(randomness, elliptic.P224())
 	case AlgorithmRSA4096:
-		return generateRSAKeyPair(rsa4096)
+		return generateRSAKeyPair(randomness, rsa4096)
 	case AlgorithmRSA2048:
-		return generateRSAKeyPair(rsa2048)
+		return generateRSAKeyPair(randomness, rsa2048)
 	case AlgorithmRSA1024:
-		return generateRSAKeyPair(rsa1024)
+		return generateRSAKeyPair(randomness, rsa1024)
 	default:
 		return nil, nil, errors.New("unsupported key generation algorithm")
 	}
 }
 
 // generateRSAKeyPair creates an RSA public-private key pair with the specified bit size.
-func generateRSAKeyPair(bits int) (*rsa.PublicKey, *rsa.PrivateKey, error) {
-	privateKey, err := rsa.GenerateKey(rand.Reader, bits)
+func generateRSAKeyPair(randomness io.Reader, bits int) (*rsa.PublicKey, *rsa.PrivateKey, error) {
+	privateKey, err := rsa.GenerateKey(randomness, bits)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error generating RSA key pair: %w", err)
 	}
@@ -86,8 +85,8 @@ func generateRSAKeyPair(bits int) (*rsa.PublicKey, *rsa.PrivateKey, error) {
 }
 
 // generateECDSAKeyPair creates an ECDSA public-private key pair based on the specified elliptic curve.
-func generateECDSAKeyPair(curve elliptic.Curve) (*ecdsa.PublicKey, *ecdsa.PrivateKey, error) {
-	privateKey, err := ecdsa.GenerateKey(curve, rand.Reader)
+func generateECDSAKeyPair(randomness io.Reader, curve elliptic.Curve) (*ecdsa.PublicKey, *ecdsa.PrivateKey, error) {
+	privateKey, err := ecdsa.GenerateKey(curve, randomness)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error generating ECDSA key pair: %w", err)
 	}
@@ -95,8 +94,8 @@ func generateECDSAKeyPair(curve elliptic.Curve) (*ecdsa.PublicKey, *ecdsa.Privat
 }
 
 // generateED25519KeyPair creates an ED25519 public-private key pair.
-func generateED25519KeyPair() (ed25519.PublicKey, ed25519.PrivateKey, error) {
-	publicKey, privateKey, err := ed25519.GenerateKey(rand.Reader)
+func generateED25519KeyPair(randomness io.Reader) (ed25519.PublicKey, ed25519.PrivateKey, error) {
+	publicKey, privateKey, err := ed25519.GenerateKey(randomness)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error generating ED25519 key pair: %w", err)
 	}

@@ -1,6 +1,7 @@
 package random_test
 
 import (
+	"crypto/rand"
 	"testing"
 
 	"github.com/copartner6412/input/random"
@@ -27,7 +28,7 @@ func FuzzPassphrase(f *testing.F) {
 		if specialSep {
 			minSeparatorLength++
 		}
-		separator, err := random.Password(minSeparatorLength, 20, lowerSep, upperSep, digitSep, specialSep)
+		separator, err := random.Password(rand.Reader, minSeparatorLength, 20, lowerSep, upperSep, digitSep, specialSep)
 		if err != nil {
 			t.Fatalf("error generating a random separator: %v", err)
 		}
@@ -42,7 +43,7 @@ func FuzzPassphrase(f *testing.F) {
 		default:
 			wordList = nil
 		}
-		passphrase, err := random.Passphrase(minWords, maxWords, separator, capitalize, number, wordList)
+		passphrase, err := random.Passphrase(rand.Reader, minWords, maxWords, separator, capitalize, number, wordList)
 		if err != nil {
 			t.Fatalf("error generating a random passphrase: %v", err)
 		}

@@ -1,6 +1,7 @@
 package random_test
 
 import (
+	"crypto/rand"
 	"testing"
 
 	"github.com/copartner6412/input/random"
@@ -15,7 +16,7 @@ const (
 func FuzzSubdomain(f *testing.F) {
 	f.Fuzz(func(t *testing.T, min, max uint) {
 		minLength, maxLength := randoms(min, max, minSubdomainLengthAllowed, maxSubdomainLengthAllowed)
-		subdomain, err := random.Subdomain(minLength, maxLength)
+		subdomain, err := random.Subdomain(rand.Reader, minLength, maxLength)
 		if err != nil {
 			t.Fatalf("error generating a random subdomain: %v", err)
 		}

@@ -3,18 +3,19 @@ package random
 import (
 	"crypto/rand"
 	"fmt"
+	"io"
 	"math/big"
 	"net"
 )
 
 // IPv6 generates a random IPv6 address of type net.IP and returns an error.
-func IPv6(cidr string) (net.IP, error) {
+func IPv6(randomness io.Reader, cidr string) (net.IP, error) {
 	if cidr == "" {
-		
+
 		// Generate a random IPv6 without CIDR restriction
 		ip := make([]byte, net.IPv6len)
 		for i := range ip {
-			random1, err := rand.Int(rand.Reader, big.NewInt(int64(maxByteNumber)))
+			random1, err := rand.Int(randomness, big.NewInt(int64(maxByteNumber)))
 			if err != nil {
 				return net.IP{}, fmt.Errorf("error generating a random number for byte: %w", err)
 			}
@@ -41,7 +42,7 @@ func IPv6(cidr string) (net.IP, error) {
 	for i := 0; i < hostBits; i++ {
 		byteIndex := i / 8
 		bitIndex := i % 8
-		random2, err := rand.Int(rand.Reader, big.NewInt(2))
+		random2, err := rand.Int(randomness, big.NewInt(2))
 		if err != nil {
 			return net.IP{}, fmt.Errorf("error generating a random number for chance of convert a zero bit to one: %w", err)
 		}

@@ -2,10 +2,10 @@ package random
 
 // AGWordList contains words from https://1password.com/txt/agwordlist.txt used for generating random passphrases.
 //
-//  - Slice Length: 18176 words
-//  - Minimum Word Length: 5 characters
-//  - Maximum Word Length: 10 characters
-//  - Average Word Length: 8.196742957746478 characters
+//   - Slice Length: 18176 words
+//   - Minimum Word Length: 5 characters
+//   - Maximum Word Length: 10 characters
+//   - Average Word Length: 8.196742957746478 characters
 var AGWordList = []string{
 	"aardvark",
 	"abaci",

@@ -3,11 +3,12 @@ package random
 import (
 	"crypto/rand"
 	"fmt"
+	"io"
 	"math/big"
 	"time"
 )
 
-func Duration(minDuration, maxDuration time.Duration) (time.Duration, error) {
+func Duration(randomness io.Reader, minDuration, maxDuration time.Duration) (time.Duration, error) {
 	if minDuration < 0 {
 		return 0, fmt.Errorf("minimum duration %v is negative", minDuration)
 	}
@@ -20,7 +21,7 @@ func Duration(minDuration, maxDuration time.Duration) (time.Duration, error) {
 		return 0, fmt.Errorf("minimum duration %v is less than maximum duration %v", minDuration, maxDuration)
 	}
 
-	random, err := rand.Int(rand.Reader, big.NewInt(int64(maxDuration - minDuration) + 1))
+	random, err := rand.Int(randomness, big.NewInt(int64(maxDuration-minDuration)+1))
 	if err != nil {
 		return 0, fmt.Errorf("error generating a random number for calculatin the duration: %w", err)
 	}

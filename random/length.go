@@ -4,10 +4,11 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
+	"io"
 	"math/big"
 )
 
-func checkLength(minLength, maxLength, minLengthAllowed, maxLengthAllowed uint) (uint, error) {
+func checkLength(randomness io.Reader, minLength, maxLength, minLengthAllowed, maxLengthAllowed uint) (uint, error) {
 	if minLength == 0 && maxLength == 0 {
 		minLength = minLengthAllowed
 		maxLength = maxLengthAllowed
@@ -31,7 +32,7 @@ func checkLength(minLength, maxLength, minLengthAllowed, maxLengthAllowed uint) 
 		}
 	}
 
-	random, err := rand.Int(rand.Reader, big.NewInt(int64(maxLength-minLength)+1))
+	random, err := rand.Int(randomness, big.NewInt(int64(maxLength-minLength)+1))
 	if err != nil {
 		return 0, fmt.Errorf("error generating a random number for length: %w", err)
 	}

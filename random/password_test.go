@@ -1,6 +1,7 @@
 package random_test
 
 import (
+	"crypto/rand"
 	"errors"
 	"testing"
 
@@ -28,7 +29,7 @@ func FuzzPasswordFunc(f *testing.F) {
 		}
 		minLength := (min % (4096 - minPasswordLength + 1)) + minPasswordLength
 		maxLength := minLength + max%(4096-minLength+1)
-		password, err := random.Password(minLength, maxLength, lower, upper, digit, special)
+		password, err := random.Password(rand.Reader, minLength, maxLength, lower, upper, digit, special)
 		if err != nil {
 			t.Fatalf("error generating a random password: %v", err)
 		}
@@ -40,8 +41,8 @@ func FuzzPasswordFunc(f *testing.F) {
 }
 
 var profileMap = map[string]struct {
-	random 		random.PasswordProfile
-	validate     validate.PasswordProfile
+	random   random.PasswordProfile
+	validate validate.PasswordProfile
 }{
 	"PasswordProfileTLSCAKey":             {random.PasswordProfileTLSCAKey, validate.PasswordProfileTLSCAKey},
 	"PasswordProfileSSHCAKey":             {random.PasswordProfileSSHCAKey, validate.PasswordProfileSSHCAKey},
@@ -68,7 +69,7 @@ func FuzzPasswordFor(f *testing.F) {
 		}
 		randomProfile := randomProfileSlice[r%uint8(len(randomProfileSlice))]
 		validateProfile := validateProfileSlice[r%uint8(len(validateProfileSlice))]
-		password, err := random.PasswordFor(randomProfile)
+		password, err := random.PasswordFor(rand.Reader, randomProfile)
 		if err != nil {
 			t.Fatalf("error generating a pseudo-random password: %v", err)
 		}

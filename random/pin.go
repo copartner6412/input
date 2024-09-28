@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
+	"io"
 	"math/big"
 	"strconv"
 )
@@ -24,7 +25,7 @@ const (
 //   - string: A randomly generated numeric PIN of the chosen length.
 //   - error: Returns an error if the minLength is less than minPINLength, if maxLength exceeds maxPINLength,
 //     or if maxLength is less than minLength.
-func PIN(minLength, maxLength uint) (string, error) {
+func PIN(randomness io.Reader, minLength, maxLength uint) (string, error) {
 	// Ensure that maxLength is not less than minLength.
 	if maxLength < minLength {
 		return "", errors.New("maximum length can not be less than minimum length")
@@ -39,20 +40,20 @@ func PIN(minLength, maxLength uint) (string, error) {
 		return "", fmt.Errorf("maximum PIN length must not exceed %d characters", maxPINLength)
 	}
 
-    random1, err := rand.Int(rand.Reader, big.NewInt(int64(maxLength-minLength+1)))
-    if err != nil {
-        return "", fmt.Errorf("error generating a random number for calculating PIN length: %w", err)
-    }
+	random1, err := rand.Int(randomness, big.NewInt(int64(maxLength-minLength+1)))
+	if err != nil {
+		return "", fmt.Errorf("error generating a random number for calculating PIN length: %w", err)
+	}
 	length := uint(random1.Int64()) + minLength
 
 	// Generate a random PIN.
 	var pin string
 	for i := 0; i < int(length); i++ {
 		// Generate a random digit (0-9)
-        random2, err := rand.Int(rand.Reader, big.NewInt(int64(10)))
-        if err != nil {
-            return "", fmt.Errorf("error generating a random digit for PIN: %W", err)
-        }
+		random2, err := rand.Int(randomness, big.NewInt(int64(10)))
+		if err != nil {
+			return "", fmt.Errorf("error generating a random digit for PIN: %W", err)
+		}
 		pin += strconv.Itoa(int(random2.Int64()))
 	}
 

@@ -1,6 +1,7 @@
 package random_test
 
 import (
+	"crypto/rand"
 	"testing"
 
 	"github.com/copartner6412/input/random"
@@ -9,7 +10,7 @@ import (
 
 func FuzzPortWellKnown(f *testing.F) {
 	f.Fuzz(func(t *testing.T, a int) {
-		port, err := random.PortWellKnown()
+		port, err := random.PortWellKnown(rand.Reader)
 		if err != nil {
 			t.Fatalf("error generating a valid random well-know port: %v", err)
 		}
@@ -22,7 +23,7 @@ func FuzzPortWellKnown(f *testing.F) {
 
 func FuzzPortNotWellKnown(f *testing.F) {
 	f.Fuzz(func(t *testing.T, a int) {
-		port, err := random.PortNotWellKnown()
+		port, err := random.PortNotWellKnown(rand.Reader)
 		if err != nil {
 			t.Fatalf("error generating a valid random not-well-know port: %v", err)
 		}
@@ -35,7 +36,7 @@ func FuzzPortNotWellKnown(f *testing.F) {
 
 func FuzzPortRegistered(f *testing.F) {
 	f.Fuzz(func(t *testing.T, a int) {
-		port, err := random.PortRegistered()
+		port, err := random.PortRegistered(rand.Reader)
 		if err != nil {
 			t.Fatalf("error generating a valid random registered port: %v", err)
 		}
@@ -48,7 +49,7 @@ func FuzzPortRegistered(f *testing.F) {
 
 func FuzzPortPrivate(f *testing.F) {
 	f.Fuzz(func(t *testing.T, a int) {
-		port, err := random.PortPrivate()
+		port, err := random.PortPrivate(rand.Reader)
 		if err != nil {
 			t.Fatalf("error generating a valid random private port: %v", err)
 		}

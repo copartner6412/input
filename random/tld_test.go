@@ -1,6 +1,7 @@
 package random_test
 
 import (
+	"crypto/rand"
 	"testing"
 
 	"github.com/copartner6412/input/random"
@@ -10,7 +11,7 @@ import (
 func FuzzTLD(f *testing.F) {
 	f.Fuzz(func(t *testing.T, min, max uint) {
 		minLength, maxLength := randoms(min, max, minTLDLengthAllowed, maxTLDLengthAllowed)
-		tld1, err := random.TLD(minLength, maxLength)
+		tld1, err := random.TLD(rand.Reader, minLength, maxLength)
 		if err != nil {
 			t.Fatalf("error generating a random gTLD: %v", err)
 		}
@@ -24,7 +25,7 @@ func FuzzTLD(f *testing.F) {
 
 func FuzzCCTLD(f *testing.F) {
 	f.Fuzz(func(t *testing.T, r int) {
-		tld, err := random.CCTLD()
+		tld, err := random.CCTLD(rand.Reader)
 		if err != nil {
 			t.Fatalf("error generating a random ccTLD: %v", err)
 		}

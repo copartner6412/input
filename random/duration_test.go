@@ -1,6 +1,7 @@
 package random_test
 
 import (
+	"crypto/rand"
 	"testing"
 	"time"
 
@@ -9,10 +10,10 @@ import (
 )
 
 func FuzzDuration(f *testing.F) {
-	f.Fuzz(func (t *testing.T, min, max uint)  {
+	f.Fuzz(func(t *testing.T, min, max uint) {
 		minDuration := time.Duration(min)
 		maxDuration := minDuration + time.Duration(max)
-		duration, err := random.Duration(minDuration, maxDuration)
+		duration, err := random.Duration(rand.Reader, minDuration, maxDuration)
 		if err != nil {
 			t.Fatalf("error generating a random duration: %v", err)
 		}
